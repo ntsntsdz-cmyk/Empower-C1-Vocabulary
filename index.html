@@ -1,15 +1,125 @@
-your-project/
-│
-├── index.html            <-- Your main dashboard page (the screen in your image)
-│
-├── unit-1/               <-- Folder for Unit 1
-│   ├── 1A/
-│   │   └── index.html    <-- Content specifically for Lesson 1A
-│   ├── 1B/
-│   │   └── index.html    <-- Content specifically for Lesson 1B
-│   └── 1C/
-│       └── index.html    <-- Content specifically for Lesson 1C
-│
-└── unit-2/               <-- Folder for Unit 2
-    └── 2A/
-        └── index.html    <-- Content specifically for Lesson 2A
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empower C1 Dashboard</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; color: #333; text-align: center; }
+        .header { background-color: #6200ee; color: white; padding: 25px 10px; }
+        .header h1 { margin: 0; font-size: 26px; }
+        .header p { margin: 5px 0 0 0; font-size: 14px; opacity: 0.9; }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; text-align: left; }
+        h2 { font-size: 18px; margin-top: 20px; color: #444; }
+        .unit-title { font-size: 13px; font-weight: bold; color: #888; letter-spacing: 1px; margin-top: 25px; text-transform: uppercase; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 10px; }
+        .card { background: white; border: 2px solid #e0e0e0; border-radius: 12px; padding: 15px 5px; text-align: center; text-decoration: none; color: #333; font-weight: bold; transition: 0.2s; display: block; }
+        .card:hover { border-color: #6200ee; background-color: #fafdff; transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card .num { font-size: 20px; color: #6200ee; display: block; }
+        .card .count { font-size: 11px; color: #666; font-weight: normal; margin-top: 4px; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📊 Empower C1 Vocabulary</h1>
+        <p>Select a lesson below to start practicing</p>
+    </div>
+
+    <div class="container">
+        <h2>Lessons Dashboard</h2>
+        
+        <!-- UNIT 1 -->
+        <div class="unit-title">Unit 1</div>
+        <div class="grid">
+            <a href="empower_c1_lesson_1A.html" class="card"><span class="num">1A</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_1B.html" class="card"><span class="num">1B</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_1C.html" class="card"><span class="num">1C</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_1D.html" class="card"><span class="num">1D</span><span class="count">Open</span></a>
+        </div>
+
+        <!-- UNIT 2 -->
+        <div class="unit-title">Unit 2</div>
+        <div class="grid">
+            <a href="empower_c1_lesson_2A.html" class="card"><span class="num">2A</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_2B.html" class="card"><span class="num">2B</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_2C.html" class="card"><span class="num">2C</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_2D.html" class="card"><span class="num">2D</span><span class="count">Open</span></a>
+        </div>
+
+        <!-- UNIT 3 -->
+        <div class="unit-title">Unit 3</div>
+        <div class="grid">
+            <a href="empower_c1_lesson_3A.html" class="card"><span class="num">3A</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_3B.html" class="card"><span class="num">3B</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_3C.html" class="card"><span class="num">3C</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_3D.html" class="card"><span class="num">3D</span><span class="count">Open</span></a>
+        </div>
+
+        <!-- UNIT 4 -->
+        <div class="unit-title">Unit 4</div>
+        <div class="grid">
+            <a href="empower_c1_lesson_4A.html" class="card"><span class="num">4A</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_4B.html" class="card"><span class="num">4B</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_4C.html" class="card"><span class="num">4C</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_4D.html" class="card"><span class="num">4D</span><span class="count">Open</span></a>
+        </div>
+
+        <!-- UNIT 5 -->
+        <div class="unit-title">Unit 5</div>
+        <div class="grid">
+            <a href="empower_c1_lesson_5A.html" class="card"><span class="num">5A</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_5B.html" class="card"><span class="num">5B</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_5C.html" class="card"><span class="num">5C</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_5D.html" class="card"><span class="num">5D</span><span class="count">Open</span></a>
+        </div>
+
+        <!-- UNIT 6 -->
+        <div class="unit-title">Unit 6</div>
+        <div class="grid">
+            <a href="empower_c1_lesson_6A.html" class="card"><span class="num">6A</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_6B.html" class="card"><span class="num">6B</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_6C.html" class="card"><span class="num">6C</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_6D.html" class="card"><span class="num">6D</span><span class="count">Open</span></a>
+        </div>
+
+        <!-- UNIT 7 -->
+        <div class="unit-title">Unit 7</div>
+        <div class="grid">
+            <a href="empower_c1_lesson_7A.html" class="card"><span class="num">7A</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_7B.html" class="card"><span class="num">7B</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_7C.html" class="card"><span class="num">7C</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_7D.html" class="card"><span class="num">7D</span><span class="count">Open</span></a>
+        </div>
+
+        <!-- UNIT 8 -->
+        <div class="unit-title">Unit 8</div>
+        <div class="grid">
+            <a href="empower_c1_lesson_8A.html" class="card"><span class="num">8A</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_8B.html" class="card"><span class="num">8B</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_8C.html" class="card"><span class="num">8C</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_8D.html" class="card"><span class="num">8D</span><span class="count">Open</span></a>
+        </div>
+
+        <!-- UNIT 9 -->
+        <div class="unit-title">Unit 9</div>
+        <div class="grid">
+            <a href="empower_c1_lesson_9A.html" class="card"><span class="num">9A</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_9B.html" class="card"><span class="num">9B</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_9C.html" class="card"><span class="num">9C</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_9D.html" class="card"><span class="num">9D</span><span class="count">Open</span></a>
+        </div>
+
+        <!-- UNIT 10 -->
+        <div class="unit-title">Unit 10</div>
+        <div class="grid">
+            <a href="empower_c1_lesson_10A.html" class="card"><span class="num">10A</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_10B.html" class="card"><span class="num">10B</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_10C.html" class="card"><span class="num">10C</span><span class="count">Open</span></a>
+            <a href="empower_c1_lesson_10D.html" class="card"><span class="num">10D</span><span class="count">Open</span></a>
+        </div>
+
+    </div>
+
+</body>
+</html>
