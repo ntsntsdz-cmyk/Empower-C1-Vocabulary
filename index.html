@@ -1,57 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empower C1 Dashboard</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; color: #333; text-align: center; }
-        .header { background-color: #6200ee; color: white; padding: 20px 10px; }
-        .header h1 { margin: 0; font-size: 24px; }
-        .header p { margin: 5px 0 0 0; font-size: 14px; opacity: 0.9; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; text-align: left; }
-        h2 { font-size: 18px; margin-top: 20px; color: #555; }
-        .unit-title { font-size: 14px; font-weight: bold; color: #777; letter-spacing: 1px; margin-top: 20px; text-transform: uppercase; }
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 10px; }
-        .card { background: white; border: 2px solid #dcdcdc; border-radius: 12px; padding: 15px 5px; text-align: center; text-decoration: none; color: #333; font-weight: bold; transition: 0.2s; cursor: pointer; }
-        .card.active { border-color: #6200ee; color: #6200ee; background-color: #f4f0ff; }
-        .card.active:hover { background-color: #e8e0ff; }
-        .card .num { font-size: 18px; display: block; }
-        .card .count { font-size: 12px; color: #777; font-weight: normal; margin-top: 4px; display: block; }
-        .card.disabled { opacity: 0.4; cursor: not-allowed; }
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <h1>📊 Empower C1</h1>
-        <p>Practise vocabulary — built for EFL learners</p>
-    </div>
-
-    <div class="container">
-        <h2>Choose a lesson</h2>
-        <p style="color: #666; font-size: 14px; margin-top: -5px;">Tap a lesson below to start practicing your vocabulary.</p>
-
-        <div class="unit-title">Unit 1</div>
-        <div class="grid">
-            <a href="empower_c1_lesson_1A.html" class="card active">
-                <span class="num">1A</span>
-                <span class="count">Active</span>
-            </a>
-            <a href="empower_c1_lesson_1B.html" class="card active">
-                <span class="num">1B</span>
-                <span class="count">Active</span>
-            </a>
-            <a href="empower_c1_lesson_1C.html" class="card active">
-                <span class="num">1C</span>
-                <span class="count">Active</span>
-            </a>
-            <a href="empower_c1_lesson_1D.html" class="card active">
-                <span class="num">1D</span>
-                <span class="count">Active</span>
-            </a>
-        </div>
-    </div>
-
-</body>
-</html>
+your-project/
+│
+├── index.html            <-- Your main dashboard page (the screen in your image)
+│
+├── unit-1/               <-- Folder for Unit 1
+│   ├── 1A/
+│   │   └── index.html    <-- Content specifically for Lesson 1A
+│   ├── 1B/
+│   │   └── index.html    <-- Content specifically for Lesson 1B
+│   └── 1C/
+│       └── index.html    <-- Content specifically for Lesson 1C
+│
+└── unit-2/               <-- Folder for Unit 2
+    └── 2A/
+        └── index.html    <-- Content specifically for Lesson 2A
