@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Empower C1 1A">
+  <title>Empower C1 — Lesson 1A</title>
+  <style>
+    :root{--p:#4f46e5;--ps:#eef2ff;--ok:#059669;--oks:#ecfdf5;--bad:#dc2626;--bads:#fef2f2;--t:#0f172a;--m:#64748b;--b:#e2e8f0;--c:#fff;--bg:#f8fafc;--r:14px;--sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px)}
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--t);min-height:100dvh;padding-bottom:calc(1rem + var(--sb));overflow-x:hidden}
+    input,textarea,button{font-size:16px;font-family:inherit}
+    header{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:calc(.75rem + var(--st)) 1rem .9rem;text-align:center;position:sticky;top:0;z-index:50}
+    header h1{font-size:1.25rem} header p{opacity:.9;font-size:.8rem}
+    .wrap{max-width:720px;margin:0 auto;padding:.75rem}
+    .stats{display:flex;gap:.4rem;flex-wrap:wrap;background:var(--c);border:1px solid var(--b);border-radius:12px;padding:.4rem .6rem;font-size:.75rem;color:var(--m);margin-bottom:.5rem}
+    .stats strong{color:var(--t)}
+    .due{width:100%;text-align:left;padding:.55rem .75rem;border-radius:12px;border:1.5px solid var(--b);background:var(--c);margin-bottom:.6rem;font-size:.82rem;min-height:44px}
+    .due.has{background:#fffbeb;border-color:#fbbf24}
+    .bar{display:flex;gap:.5rem;align-items:center;margin-bottom:.55rem}
+    .ham{width:42px;height:42px;border-radius:12px;border:1.5px solid var(--b);background:var(--c);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px}
+    .ham span{display:block;width:18px;height:2px;background:var(--t);border-radius:2px}
+    .lesson-tag{margin-left:auto;background:var(--ps);color:var(--p);border-radius:999px;padding:.35rem .7rem;font-size:.78rem;font-weight:700}
+    .overlay{position:fixed;inset:0;background:rgba(15,23,42,.4);z-index:180;opacity:0;pointer-events:none;transition:.2s}
+    .overlay.show{opacity:1;pointer-events:auto}
+    .menu{position:fixed;top:0;left:0;height:100%;width:min(300px,86vw);background:var(--c);z-index:190;transform:translateX(-105%);transition:.25s;overflow-y:auto;padding-bottom:var(--sb)}
+    .menu.open{transform:none}
+    .menu h3{padding:1rem;border-bottom:1px solid var(--b)}
+    .sec{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--m);padding:.8rem 1rem .3rem;font-weight:700}
+    .mi{display:block;width:100%;text-align:left;border:0;background:0;padding:.75rem 1.1rem;font-size:.95rem;font-weight:600}
+    .mi:active{background:var(--ps);color:var(--p)}
+    .quick{display:grid;grid-template-columns:repeat(2,1fr);gap:.4rem;margin-bottom:.7rem}
+    @media(min-width:520px){.quick{grid-template-columns:repeat(4,1fr)}}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.3rem;background:var(--p);color:#fff;border:0;padding:.55rem .9rem;border-radius:10px;font-weight:600;min-height:42px;cursor:pointer}
+    .btn-o{background:transparent;border:1.5px solid var(--p);color:var(--p)}
+    .btn-s{padding:.4rem .7rem;font-size:.8rem;min-height:36px}
+    .quick .btn{width:100%;font-size:.78rem}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.45rem}
+    @media(min-width:400px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media(min-width:560px){.grid{grid-template-columns:repeat(4,1fr)}}
+    .card{background:var(--c);border:1.5px solid var(--b);border-radius:12px;padding:.7rem .35rem;text-align:center;min-height:72px;position:relative}
+    .card .e{font-size:1.4rem;display:block}
+    .card .t{font-weight:650;font-size:.72rem;margin-top:.2rem;word-break:break-word}
+    .panel{display:none;background:var(--c);border:1px solid var(--b);border-radius:var(--r);padding:1rem;margin-top:.75rem}
+    .panel.show{display:block}
+    .back{width:40px;height:40px;border-radius:12px;border:1.5px solid var(--b);background:var(--c);font-size:1.25rem;font-weight:700}
+    .def{background:#f1f5f9;border-left:3px solid var(--p);padding:.7rem;border-radius:0 10px 10px 0;margin:.5rem 0;font-size:.92rem}
+    .ex{background:var(--oks);border-left:3px solid var(--ok);padding:.65rem;border-radius:0 10px 10px 0;margin:.4rem 0 .7rem;font-style:italic;font-size:.9rem}
+    .tabs{display:flex;flex-wrap:wrap;gap:.25rem;margin:.6rem 0}
+    .tab{border:1.5px solid var(--b);background:var(--c);border-radius:999px;padding:.4rem .65rem;font-size:.78rem;font-weight:600}
+    .tab.on{background:var(--p);color:#fff;border-color:var(--p)}
+    .tc{display:none}.tc.on{display:block}
+    .fb{margin-top:.6rem;padding:.65rem;border-radius:12px;display:none;font-size:.9rem}
+    .fb.show{display:block}.fb.ok{background:var(--oks);color:#065f46}.fb.bad{background:var(--bads);color:#991b1b}.fb.info{background:#eff6ff;color:#1e40af}
+    .modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:200;align-items:flex-end;justify-content:center}
+    .modal.show{display:flex}
+    .mc{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:540px;max-height:92dvh;overflow-y:auto;padding:1.1rem 1rem calc(1.2rem + var(--sb));-webkit-overflow-scrolling:touch}
+    @media(min-width:560px){.modal{align-items:center;padding:1rem}.mc{border-radius:16px}}
+    .opt{display:block;width:100%;text-align:left;padding:.75rem;border:1.5px solid var(--b);border-radius:12px;background:var(--c);margin:.35rem 0;font-size:.9rem}
+    .order-bank,.order-slots{display:flex;flex-wrap:wrap;gap:.35rem;min-height:44px;padding:.5rem;border:1.5px dashed var(--b);border-radius:12px;margin:.4rem 0}
+    .chip{background:var(--ps);color:var(--p);border:1.5px solid #c7d2fe;border-radius:999px;padding:.4rem .65rem;font-size:.85rem;font-weight:600}
+    .hk{display:grid;grid-template-columns:repeat(7,1fr);gap:.25rem;margin-top:.6rem}
+    .hk button{border:1.5px solid var(--b);background:var(--c);border-radius:8px;padding:.45rem 0;font-weight:700;min-height:40px}
+    .hk button:disabled{opacity:.4}
+    .hl{display:inline-block;min-width:1.1rem;text-align:center;border-bottom:2px solid var(--b);margin:0 .12rem;font-weight:700;font-size:1.15rem}
+    .cw-row{display:grid;grid-template-columns:28px 1fr;gap:.4rem;padding:.5rem 0;border-bottom:1px solid var(--b)}
+    .cw-n{width:28px;height:28px;border-radius:8px;background:var(--ps);color:var(--p);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem}
+    .cw-in{width:100%;padding:.5rem;border:1.5px solid var(--b);border-radius:10px;margin-top:.3rem}
+    .yg{background:#0f172a;border-radius:12px;min-height:220px;position:relative;overflow:hidden;margin:.5rem 0}
+    #yg-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#94a3b8;text-align:center;padding:1rem}
+    footer{text-align:center;font-size:.75rem;color:var(--m);padding:1rem}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Empower C1</h1>
+  <p>Lesson 1A · Language learning</p>
+</header>
+<div class="wrap">
+  <div class="bar">
+    <button class="ham" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <strong style="font-size:.85rem;color:var(--m)">Empower C1</strong>
+    <span class="lesson-tag">Unit 1 · 1A</span>
+  </div>
+  <div class="stats">✓ <strong id="learnedCount">0</strong>/<span id="totalWords">0</span> · 🔥 <strong id="streakCount">0</strong> · pts <strong id="scoreDisplay">0</strong></div>
+  <button class="due" id="dueLine"><strong>Due for review</strong> — <span id="dueDetail">Nothing due</span></button>
+  <div class="quick">
+    <button class="btn btn-o" data-act="match">🔗 Match</button>
+    <button class="btn btn-o" data-act="gap">⬜ Gaps</button>
+    <button class="btn btn-o" data-act="order">🔀 Order</button>
+    <button class="btn btn-o" data-act="hang">🪢 Hangman</button>
+    <button class="btn btn-o" data-act="cw">🧩 Crossword</button>
+    <button class="btn btn-o" data-act="quiz">🎲 Quiz</button>
+    <button class="btn btn-o" data-act="write">✍️ Write</button>
+    <button class="btn btn-o" data-act="speak">🗣️ Speak</button>
+  </div>
+  <div style="display:flex;gap:.45rem;margin-bottom:.65rem;flex-wrap:wrap">
+    <button type="button" class="btn" id="addWordBtn" style="flex:1;min-width:140px">➕ Add word</button>
+  </div>
+  <div class="grid" id="wordGrid"></div>
+  <div class="panel" id="practicePanel">
+    <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:.5rem">
+      <button class="back" id="backBtn">←</button>
+      <span id="currentEmoji" style="font-size:1.8rem"></span>
+      <div style="flex:1"><div id="currentTerm" style="font-size:1.2rem;font-weight:700;color:var(--p)"></div><div id="currentPhonetic" style="font-size:.8rem;color:var(--m);font-style:italic"></div></div>
+      <button class="btn btn-s" id="hearBtn">🔊</button>
+      <button class="btn btn-o btn-s" id="markLearnedBtn">✓</button>
+      <button class="btn btn-o btn-s" id="markDifficultBtn">🔥</button>
+    </div>
+    <div class="def" id="definitionBox"></div>
+    <div class="ex" id="exampleBox"></div>
+    <div id="wordImageWrap" style="display:none;margin:.55rem 0;border-radius:12px;overflow:hidden;background:#e2e8f0;max-height:200px">
+      <img id="wordImage" alt="" style="width:100%;max-height:200px;object-fit:cover;display:block">
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin:.45rem 0 .7rem">
+      <button type="button" class="btn btn-o btn-s" id="imgUploadBtn">📷 Upload</button>
+      <button type="button" class="btn btn-o btn-s" id="imgGoogleBtn">🔎 Google</button>
+      <button type="button" class="btn btn-o btn-s" id="imgUrlBtn">🔗 Paste URL</button>
+      <button type="button" class="btn btn-o btn-s" id="imgRemoveBtn">✕ Remove</button>
+      <input type="file" id="imgFileInput" accept="image/*" style="display:none">
+    </div>
+    <div class="yg"><div id="yg-widget"></div><div id="yg-loading">🎬 YouGlish…</div></div>
+    <button class="btn btn-s" id="ygReloadBtn">↻ Reload videos</button>
+    <div class="tabs">
+      <button class="tab on" data-tab="mc">MCQ</button>
+      <button class="tab" data-tab="spell">Spelling</button>
+      <button class="tab" data-tab="write">Write</button>
+    </div>
+    <div class="tc on" id="tab-mc"><p id="mcQ" style="font-weight:600;margin-bottom:.4rem"></p><div id="mcOpts"></div><div class="fb" id="mcFb"></div></div>
+    <div class="tc" id="tab-spell"><p id="spellPrompt" style="font-weight:600;margin-bottom:.4rem"></p>
+      <input id="spellInput" style="width:100%;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin-bottom:.4rem" placeholder="Type the phrase">
+      <button class="btn btn-s" id="checkSpellBtn">Check</button>
+      <button class="btn btn-o btn-s" id="spellHintBtn">💡 Hint</button>
+      <div class="fb" id="spellFb"></div>
+    </div>
+    <div class="tc" id="tab-write"><p style="margin-bottom:.4rem">Write a sentence with <strong id="writeWord"></strong></p>
+      <textarea id="sentInput" style="width:100%;min-height:80px;padding:.55rem;border:1.5px solid var(--b);border-radius:10px"></textarea>
+      <div style="margin-top:.4rem"><button class="btn btn-s" id="checkSentBtn">Check</button>
+      <button class="btn btn-o btn-s" id="showExBtn">Show example</button></div>
+      <div class="fb" id="sentFb"></div>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="menuOverlay"></div>
+<nav class="menu" id="sideMenu">
+  <h3>Menu <button class="btn btn-o btn-s" id="menuClose" style="float:right">✕</button></h3>
+  <div class="sec">Study</div>
+  <button class="mi" data-act="match">🔗 Match</button>
+  <button class="mi" data-act="gap">⬜ Fill the gaps</button>
+  <button class="mi" data-act="order">🔀 Word order</button>
+  <button class="mi" data-act="hang">🪢 Hangman</button>
+  <button class="mi" data-act="cw">🧩 Crossword</button>
+  <button class="mi" data-act="quiz">🎲 Random Quiz</button>
+  <div class="sec">Activate</div>
+  <button class="mi" data-act="write">✍️ Write sentences</button>
+  <button class="mi" data-act="speak">🗣️ Speak sentences</button>
+  <div class="sec">Progress</div>
+  <button class="mi" data-act="review">🔁 Review</button>
+  <button class="mi" data-act="progress">📊 Progress</button>
+</nav>
+
+<div class="modal" id="gameModal"><div class="mc" id="gameBody"></div></div>
+
+<div class="modal" id="addWordModal">
+  <div class="mc">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
+      <h3>➕ Add new word</h3>
+      <button type="button" class="btn btn-o btn-s" id="closeAddWordBtn">Close</button>
+    </div>
+    <label style="font-size:.8rem;color:var(--m)">Term / phrase *</label>
+    <input id="awTerm" style="width:100%;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.25rem 0 .55rem" placeholder="e.g. brush up on">
+    <label style="font-size:.8rem;color:var(--m)">Definition *</label>
+    <textarea id="awDef" style="width:100%;min-height:70px;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.25rem 0 .55rem" placeholder="Meaning…"></textarea>
+    <label style="font-size:.8rem;color:var(--m)">Example sentence</label>
+    <textarea id="awEx" style="width:100%;min-height:60px;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.25rem 0 .55rem" placeholder="A sentence using the phrase…"></textarea>
+    <label style="font-size:.8rem;color:var(--m)">Phonetic (optional)</label>
+    <input id="awPhon" style="width:100%;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.25rem 0 .55rem" placeholder="/brʌʃ ʌp ɒn/">
+    <label style="font-size:.8rem;color:var(--m)">Emoji (optional)</label>
+    <input id="awEmoji" style="width:100%;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.25rem 0 .75rem" placeholder="📚" maxlength="4">
+    <button type="button" class="btn" id="saveAddWordBtn" style="width:100%">Save word</button>
+    <p style="font-size:.75rem;color:var(--m);margin-top:.5rem;text-align:center">After saving, open the card to attach a picture (upload / Google / URL).</p>
+  </div>
+</div>
+
+<footer>Isolated lesson file · Progress saved only for 1A · Speaking best in Chrome</footer>
+<script src="https://youglish.com/public/emb/widget.js" async></script>
+<script>
+const STORAGE_KEY = 'empower_c1_1A_v1';
+const CUSTOM_KEY = STORAGE_KEY + '_custom';
+const IMAGE_KEY = STORAGE_KEY + '_images';
+const LESSON = '1A';
+const builtInWords = [
+  {term:"get accustomed to",phonetic:"/ɡet əˈkʌstəmd tə/",definition:"to become familiar with something so that it no longer seems strange or difficult",example:"It takes time to get accustomed to a new accent.",emoji:"🔄"},
+  {term:"immerse oneself in",phonetic:"/ɪˈmɜːs wʌnˈself ɪn/",definition:"to involve yourself deeply in an activity, language, or culture",example:"She immersed herself in English by watching films and talking to native speakers.",emoji:"🌊"},
+  {term:"acquire",phonetic:"/əˈkwaɪə(r)/",definition:"to learn or develop a skill or language naturally over time",example:"Children often acquire language naturally through interaction.",emoji:"📚"},
+  {term:"pick up",phonetic:"/pɪk ʌp/",definition:"to learn a phrase or language informally by listening and interacting",example:"I picked up a few useful expressions from watching British comedy shows.",emoji:"👂"},
+  {term:"have an ear for",phonetic:"/hæv ən ɪə(r) fɔː(r)/",definition:"to have a natural ability to hear and copy sounds or languages accurately",example:"He has an ear for languages and can copy new accents surprisingly well.",emoji:"👂"},
+  {term:"grasp",phonetic:"/ɡrɑːsp/",definition:"to understand a complex idea fully",example:"Once I grasped the basic pattern, the grammar became much easier.",emoji:"🧠"},
+  {term:"brush up on",phonetic:"/brʌʃ ʌp ɒn/",definition:"to refresh a skill or language you learned previously",example:"I need to brush up on my French before my trip to Paris.",emoji:"🧹"},
+  {term:"put into practice",phonetic:"/pʊt ˈɪntuː ˈpræktɪs/",definition:"to use new knowledge in a real-life situation",example:"Learning a new expression is useful only if you put it into practice.",emoji:"🛠️"},
+  {term:"keep at it",phonetic:"/kiːp æt ɪt/",definition:"to persist and refuse to give up despite difficulties",example:"Your pronunciation may feel awkward at first, but keep at it.",emoji:"🏃"}
+];
+let words = builtInWords.slice();
+let wordImages = {};
+
+let currentIndex=-1, score=0, streak=0, learned=new Set(), difficult=new Set(), learning=new Set(), srs={};
+let ygWidget=null, ygReady=false, pendingTerm=null;
+
+function loadCustom(){
+  try{
+    const custom=JSON.parse(localStorage.getItem(CUSTOM_KEY)||'[]');
+    wordImages=JSON.parse(localStorage.getItem(IMAGE_KEY)||'{}');
+    const map={};
+    builtInWords.forEach(w=>{map[w.term.toLowerCase()]={...w}; if(wordImages[w.term]) map[w.term.toLowerCase()].image=wordImages[w.term];});
+    (custom||[]).forEach(c=>{
+      if(!c||!c.term)return;
+      const k=c.term.toLowerCase();
+      map[k]={term:c.term,phonetic:c.phonetic||'',definition:c.definition||'',example:c.example||'',emoji:c.emoji||'📝',custom:true,image:wordImages[c.term]||c.image||''};
+    });
+    words=Object.values(map);
+  }catch(e){words=builtInWords.slice();}
+}
+function saveCustomList(){
+  const custom=words.filter(w=>w.custom).map(w=>({term:w.term,phonetic:w.phonetic||'',definition:w.definition||'',example:w.example||'',emoji:w.emoji||'📝'}));
+  localStorage.setItem(CUSTOM_KEY,JSON.stringify(custom));
+  localStorage.setItem(IMAGE_KEY,JSON.stringify(wordImages));
+}
+function setWordImage(term,url){
+  if(!term)return;
+  if(url) wordImages[term]=url; else delete wordImages[term];
+  const w=words.find(x=>x.term===term); if(w) w.image=url||'';
+  localStorage.setItem(IMAGE_KEY,JSON.stringify(wordImages));
+  showWordImage(term);
+}
+function showWordImage(term){
+  const wrap=document.getElementById('wordImageWrap');
+  const img=document.getElementById('wordImage');
+  const url=(words.find(w=>w.term===term)||{}).image || wordImages[term] || '';
+  if(url){img.src=url;wrap.style.display='block';img.onerror=()=>{wrap.style.display='none';};}
+  else{wrap.style.display='none';img.removeAttribute('src');}
+}
+function openAddWord(){
+  document.getElementById('awTerm').value='';
+  document.getElementById('awDef').value='';
+  document.getElementById('awEx').value='';
+  document.getElementById('awPhon').value='';
+  document.getElementById('awEmoji').value='📝';
+  document.getElementById('addWordModal').classList.add('show');
+}
+function saveAddWord(){
+  const term=(document.getElementById('awTerm').value||'').trim();
+  const definition=(document.getElementById('awDef').value||'').trim();
+  const example=(document.getElementById('awEx').value||'').trim();
+  const phonetic=(document.getElementById('awPhon').value||'').trim();
+  const emoji=(document.getElementById('awEmoji').value||'📝').trim()||'📝';
+  if(!term||!definition){alert('Term and definition are required.');return;}
+  if(words.some(w=>w.term.toLowerCase()===term.toLowerCase())){alert('This term already exists.');return;}
+  words.push({term,definition,example:example||('I used “'+term+'” in a sentence.'),phonetic,emoji,custom:true,image:''});
+  ensureSrs(term); saveCustomList(); save(); renderGrid(); updateStats();
+  document.getElementById('addWordModal').classList.remove('show');
+  alert('Saved. Open the card to attach a picture if you like.');
+}
+
+function load(){try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');score=d.score||0;streak=d.streak||0;learned=new Set(d.learned||[]);difficult=new Set(d.difficult||[]);learning=new Set(d.learning||[]);srs=d.srs||{};}catch(e){}}
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify({score,streak,learned:[...learned],difficult:[...difficult],learning:[...learning],srs}));}
+function ensureSrs(t){if(!srs[t])srs[t]={ease:2.5,interval:0,repetitions:0,nextReview:Date.now()};return srs[t];}
+function srsUpdate(t,q){const c=ensureSrs(t);c.lastResult=q;if(q===0){c.repetitions=0;c.interval=0.01;}else{c.repetitions++;if(c.repetitions===1)c.interval=1;else if(c.repetitions===2)c.interval=3;else c.interval=Math.round(c.interval*c.ease);c.ease=Math.max(1.3,c.ease+(0.1-(3-q)*(0.08+(3-q)*0.02)));}c.nextReview=Date.now()+c.interval*86400000;save();return c;}
+function getDue(){return words.filter(w=>ensureSrs(w.term).nextReview<=Date.now());}
+function markWrong(t){difficult.add(t);learned.delete(t);learning.add(t);save();}
+function markLearned(t){learned.add(t);difficult.delete(t);learning.delete(t);srsUpdate(t,3);save();updateStats();renderGrid();}
+function speak(t){if(!speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-GB';u.rate=.9;speechSynthesis.speak(u);}
+function phraseRe(t){return new RegExp('\\b'+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').replace(/\s+/g,'\\s+')+'\\b','i');}
+function updateStats(){document.getElementById('learnedCount').textContent=learned.size;document.getElementById('totalWords').textContent=words.length;document.getElementById('streakCount').textContent=streak;document.getElementById('scoreDisplay').textContent=score;
+  const due=getDue();const line=document.getElementById('dueLine');const det=document.getElementById('dueDetail');
+  if(due.length){line.classList.add('has');det.textContent=due.length+' phrase(s): '+due.slice(0,3).map(w=>w.term).join(', ');}
+  else{line.classList.remove('has');det.textContent='Nothing due — keep practising';}
+}
+function renderGrid(){const g=document.getElementById('wordGrid');g.innerHTML='';words.forEach((w,i)=>{const d=document.createElement('div');d.className='card';
+  let badge='';if(learned.has(w.term))badge='✓';else if(difficult.has(w.term))badge='🔥';
+  d.innerHTML=(badge?`<span style="position:absolute;top:4px;right:6px;font-size:.7rem">${badge}</span>`:'')+`<span class="e">${w.emoji}</span><span class="t">${w.term}</span>`;
+  d.onclick=()=>selectWord(i);g.appendChild(d);});}
+function selectWord(i){currentIndex=i;const w=words[i];document.getElementById('practicePanel').classList.add('show');
+  document.getElementById('currentEmoji').textContent=w.emoji||'📝';document.getElementById('currentTerm').textContent=w.term;
+  document.getElementById('currentPhonetic').textContent=w.phonetic||'';
+  document.getElementById('definitionBox').innerHTML='<strong>Definition:</strong> '+w.definition;
+  document.getElementById('exampleBox').innerHTML='<strong>Example:</strong> “'+(w.example||'')+'”';
+  document.getElementById('writeWord').textContent=w.term;
+  showWordImage(w.term);
+  loadYouGlish(w.term);genMC();document.getElementById('spellPrompt').textContent=w.definition;
+  document.getElementById('practicePanel').scrollIntoView({behavior:'smooth'});}
+function genMC(){if(currentIndex<0)return;const w=words[currentIndex];const opts=[w.definition];
+  while(opts.length<4){const o=words[Math.floor(Math.random()*words.length)].definition;if(!opts.includes(o))opts.push(o);}
+  opts.sort(()=>Math.random()-.5);document.getElementById('mcQ').textContent='What does “'+w.term+'” mean?';
+  const box=document.getElementById('mcOpts');box.innerHTML='';
+  opts.forEach(o=>{const b=document.createElement('button');b.className='opt';b.textContent=o;b.onclick=()=>{
+    const fb=document.getElementById('mcFb');const ok=o===w.definition;fb.className='fb show '+(ok?'ok':'bad');
+    fb.textContent=ok?'✅ Correct':'❌ '+w.definition;if(ok){score+=10;srsUpdate(w.term,2);}else{srsUpdate(w.term,0);markWrong(w.term);}updateStats();save();};box.appendChild(b);});
+  document.getElementById('mcFb').classList.remove('show');}
+
+function openModal(html){document.getElementById('gameBody').innerHTML=html;document.getElementById('gameModal').classList.add('show');}
+function closeModal(){document.getElementById('gameModal').classList.remove('show');}
+
+// Match
+function startMatch(){const sel=[...words].sort(()=>Math.random()-.5).slice(0,Math.min(6,words.length));
+  let matched=0,selId=null;
+  openModal(`<div style="display:flex;justify-content:space-between;align-items:center"><h3>🔗 Match</h3><button class="btn btn-o btn-s" id="x">Close</button></div>
+  <p style="font-size:.85rem;color:var(--m);margin:.4rem 0">Tap a phrase, then its definition.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem"><div id="mt"></div><div id="md"></div></div>
+  <p style="text-align:center;margin-top:.6rem;font-weight:600" id="ms">Matched: 0 / ${sel.length}</p>
+  <div style="text-align:center;margin-top:.5rem"><button class="btn btn-o btn-s" id="mh">💡 Hint</button> <button class="btn btn-o btn-s" id="mr">🔄 New</button></div>`);
+  document.getElementById('x').onclick=closeModal;document.getElementById('mr').onclick=startMatch;
+  const mt=document.getElementById('mt'),md=document.getElementById('md');
+  [...sel].sort(()=>Math.random()-.5).forEach(w=>{const b=document.createElement('button');b.className='opt';b.textContent=w.emoji+' '+w.term;b.dataset.id=w.term;b.onclick=()=>{selId=w.term;mt.querySelectorAll('.opt').forEach(x=>x.style.outline='');b.style.outline='2px solid var(--p)';};mt.appendChild(b);});
+  [...sel].sort(()=>Math.random()-.5).forEach(w=>{const b=document.createElement('button');b.className='opt';b.textContent=w.definition;b.dataset.id=w.term;b.onclick=()=>{
+    if(!selId)return;if(selId===w.term){b.disabled=true;mt.querySelector(`[data-id="${selId}"]`).disabled=true;matched++;document.getElementById('ms').textContent='Matched: '+matched+' / '+sel.length;score+=15;srsUpdate(w.term,2);selId=null;updateStats();save();if(matched===sel.length)document.getElementById('ms').textContent='🎉 Complete!';}
+    else{b.style.borderColor='#f87171';setTimeout(()=>b.style.borderColor='',500);srsUpdate(selId,0);markWrong(selId);}
+  };md.appendChild(b);});
+  document.getElementById('mh').onclick=()=>{const u=[...mt.querySelectorAll('.opt:not(:disabled)')][0];if(!u)return;const d=md.querySelector(`[data-id="${u.dataset.id}"]:not(:disabled)`);if(d){u.style.boxShadow='0 0 0 2px #f59e0b';d.style.boxShadow='0 0 0 2px #f59e0b';setTimeout(()=>{u.style.boxShadow='';d.style.boxShadow='';},1000);}};
+}
+
+// Gap
+function startGap(){const q=[...words].sort(()=>Math.random()-.5);let i=0,ok=0,done=false;
+  function show(){if(i>=q.length){openModal(`<h3>⬜ Gaps done</h3><p>${ok}/${q.length} correct</p><button class="btn" id="x">Close</button>`);document.getElementById('x').onclick=closeModal;return;}
+    const w=q[i];const re=new RegExp(w.term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i');
+    const gapped=re.test(w.example)?w.example.replace(re,'______'):('______ — '+w.definition);
+    openModal(`<div style="display:flex;justify-content:space-between"><h3>⬜ Fill the gaps</h3><button class="btn btn-o btn-s" id="x">Close</button></div>
+    <p style="font-size:.8rem;color:var(--m)">${i+1} / ${q.length}</p>
+    <div class="def">${gapped}</div><p style="font-size:.85rem;color:var(--m)">Meaning: ${w.definition}</p>
+    <input id="gi" style="width:100%;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.4rem 0" placeholder="Type the phrase">
+    <button class="btn btn-s" id="gc">Check</button> <button class="btn btn-o btn-s" id="gh">💡 Hint</button>
+    <div class="fb" id="gf"></div><button class="btn btn-s" id="gn" style="display:none;margin-top:.5rem">Next →</button>`);
+    document.getElementById('x').onclick=closeModal;done=false;
+    document.getElementById('gc').onclick=()=>{if(done)return;const v=(document.getElementById('gi').value||'').trim().toLowerCase();const fb=document.getElementById('gf');done=true;
+      if(v===w.term.toLowerCase()){fb.className='fb show ok';fb.textContent='✅ Correct';ok++;score+=15;srsUpdate(w.term,2);}else{fb.className='fb show bad';fb.innerHTML='❌ <strong>'+w.term+'</strong>';srsUpdate(w.term,0);markWrong(w.term);}document.getElementById('gn').style.display='inline-flex';updateStats();save();};
+    document.getElementById('gh').onclick=()=>{document.getElementById('gf').className='fb show info';document.getElementById('gf').textContent='Hint: '+w.term[0]+'·'.repeat(Math.max(0,w.term.length-1));};
+    document.getElementById('gn').onclick=()=>{i++;show();};
+  }show();
+}
+
+// Order
+function startOrder(){const q=words.filter(w=>(w.example||'').split(/\s+/).length>=3).sort(()=>Math.random()-.5);let i=0,ok=0;
+  function tok(s){return (s||'').match(/[\w'’-]+|[.,!?;:]/g)||[];}
+  function show(){if(i>=q.length){openModal(`<h3>🔀 Done</h3><p>${ok}/${q.length}</p><button class="btn" id="x">Close</button>`);document.getElementById('x').onclick=closeModal;return;}
+    const w=q[i];const tokens=tok(w.example);let picked=[];let answered=false;
+    function render(){const slots=document.getElementById('os');const bank=document.getElementById('ob');slots.innerHTML='';bank.innerHTML='';
+      picked.forEach((t,ix)=>{const b=document.createElement('button');b.className='chip';b.textContent=t;b.onclick=()=>{if(!answered){picked.splice(ix,1);render();}};slots.appendChild(b);});
+      const rem=tokens.slice();picked.forEach(p=>{const ix=rem.indexOf(p);if(ix>=0)rem.splice(ix,1);});
+      rem.sort(()=>Math.random()-.5).forEach(t=>{const b=document.createElement('button');b.className='chip';b.textContent=t;b.onclick=()=>{if(!answered){picked.push(t);render();}};bank.appendChild(b);});}
+    openModal(`<div style="display:flex;justify-content:space-between"><h3>🔀 Word order</h3><button class="btn btn-o btn-s" id="x">Close</button></div>
+    <p style="font-size:.8rem;color:var(--m)">${i+1}/${q.length}</p><p style="font-size:.85rem;color:var(--m)">${w.definition}</p>
+    <div class="order-slots" id="os"></div><div class="order-bank" id="ob"></div>
+    <button class="btn btn-s" id="oc">Check</button> <button class="btn btn-o btn-s" id="oh">💡 Hint</button>
+    <div class="fb" id="of"></div><button class="btn btn-s" id="on" style="display:none;margin-top:.5rem">Next →</button>`);
+    document.getElementById('x').onclick=closeModal;render();
+    document.getElementById('oc').onclick=()=>{if(answered)return;answered=true;const got=picked.join(' ').replace(/\s+([.,!?;:])/g,'$1').trim();const target=tokens.join(' ').replace(/\s+([.,!?;:])/g,'$1').trim();
+      const fb=document.getElementById('of');if(got.toLowerCase()===target.toLowerCase()){fb.className='fb show ok';fb.textContent='✅ Perfect';ok++;score+=20;srsUpdate(w.term,2);}else{fb.className='fb show bad';fb.textContent='❌ '+w.example;srsUpdate(w.term,0);markWrong(w.term);}document.getElementById('on').style.display='inline-flex';updateStats();save();};
+    document.getElementById('oh').onclick=()=>{const n=tokens[picked.length];document.getElementById('of').className='fb show info';document.getElementById('of').textContent=n?('Next starts with “'+n[0]+'”'):'Press Check';};
+    document.getElementById('on').onclick=()=>{i++;show();};
+  }show();
+}
+
+// Hangman
+function startHang(){const q=[...words].sort(()=>Math.random()-.5);let i=0,ok=0;
+  function letters(t){return t.toLowerCase().replace(/[^a-z]/g,'');}
+  function show(){if(i>=q.length){openModal(`<h3>🪢 Done</h3><p>Won ${ok}/${q.length}</p><button class="btn" id="x">Close</button>`);document.getElementById('x').onclick=closeModal;return;}
+    const w=q[i];let lives=6,guessed=new Set(),done=false;
+    function draw(){const pure=letters(w.term);let word='';for(const ch of w.term){word+=`<span class="hl">${/[a-z]/i.test(ch)?(guessed.has(ch.toLowerCase())?ch:'_'):ch}</span>`;}
+      document.getElementById('hw').innerHTML=word;document.getElementById('hp').textContent=`${i+1}/${q.length} · Lives: ${lives}`;
+      const keys=document.getElementById('hk');keys.innerHTML='';
+      'abcdefghijklmnopqrstuvwxyz'.split('').forEach(L=>{const b=document.createElement('button');b.textContent=L.toUpperCase();
+        if(guessed.has(L)){b.disabled=true;b.style.background=pure.includes(L)?'#ecfdf5':'#fef2f2';}
+        b.onclick=()=>guess(L);keys.appendChild(b);});}
+    function guess(L){if(done||guessed.has(L))return;guessed.add(L);const pure=letters(w.term);if(!pure.includes(L))lives--;draw();
+      if(pure.split('').every(c=>guessed.has(c))){done=true;document.getElementById('hf').className='fb show ok';document.getElementById('hf').textContent='✅ '+w.term;ok++;score+=15;srsUpdate(w.term,2);document.getElementById('hn').style.display='inline-flex';updateStats();save();}
+      else if(lives<=0){done=true;document.getElementById('hf').className='fb show bad';document.getElementById('hf').textContent='❌ '+w.term;srsUpdate(w.term,0);markWrong(w.term);document.getElementById('hn').style.display='inline-flex';updateStats();save();}}
+    openModal(`<div style="display:flex;justify-content:space-between"><h3>🪢 Hangman</h3><button class="btn btn-o btn-s" id="x">Close</button></div>
+    <p id="hp" style="font-size:.85rem;color:var(--m)"></p><p style="text-align:center;font-size:.9rem">${w.definition}</p>
+    <div style="text-align:center;margin:.6rem 0" id="hw"></div><div class="hk" id="hk"></div>
+    <div style="margin-top:.5rem"><button class="btn btn-o btn-s" id="hh">💡 Hint</button></div>
+    <div class="fb" id="hf"></div><button class="btn btn-s" id="hn" style="display:none;margin-top:.5rem">Next →</button>`);
+    document.getElementById('x').onclick=closeModal;document.getElementById('hh').onclick=()=>{const miss=letters(w.term).split('').filter(c=>!guessed.has(c));if(miss.length)guess(miss[Math.floor(Math.random()*miss.length)]);};
+    document.getElementById('hn').onclick=()=>{i++;show();};draw();
+  }show();
+}
+
+// Crossword
+function startCw(){const items=[...words].sort(()=>Math.random()-.5).slice(0,Math.min(8,words.length));let focus=0;
+  openModal(`<div style="display:flex;justify-content:space-between"><h3>🧩 Crossword clues</h3><button class="btn btn-o btn-s" id="x">Close</button></div>
+  <div id="cl"></div><div style="margin-top:.6rem"><button class="btn btn-s" id="cc">Check all</button> <button class="btn btn-o btn-s" id="ch">💡 Hint</button></div>
+  <div class="fb" id="cf"></div>`);
+  document.getElementById('x').onclick=closeModal;
+  const cl=document.getElementById('cl');items.forEach((w,i)=>{const r=document.createElement('div');r.className='cw-row';
+    r.innerHTML=`<div class="cw-n">${i+1}</div><div><div style="font-size:.9rem">${w.definition}</div><input class="cw-in" data-i="${i}" placeholder="${w.term.length} characters"></div>`;
+    cl.appendChild(r);});
+  cl.querySelectorAll('.cw-in').forEach(inp=>inp.addEventListener('focus',()=>focus=+inp.dataset.i));
+  document.getElementById('cc').onclick=()=>{let ok=0;items.forEach((w,i)=>{const inp=cl.querySelector(`[data-i="${i}"]`);const v=(inp.value||'').trim().toLowerCase();
+    if(v===w.term.toLowerCase()){inp.style.borderColor='#34d399';ok++;srsUpdate(w.term,2);}else{inp.style.borderColor='#f87171';if(v){srsUpdate(w.term,0);markWrong(w.term);}}});
+    document.getElementById('cf').className='fb show info';document.getElementById('cf').textContent=ok+' / '+items.length+' correct';updateStats();save();};
+  document.getElementById('ch').onclick=()=>{const w=items[focus];const inp=cl.querySelector(`[data-i="${focus}"]`);if(!w||!inp)return;const cur=inp.value||'';inp.value=w.term.slice(0,Math.min(cur.length+1,w.term.length));};
+}
+
+// Quiz
+function startQuiz(){const q=[...words].sort(()=>Math.random()-.5);let i=0,ok=0;
+  function show(){if(i>=q.length){openModal(`<h3>🎲 Done</h3><p>${ok}/${q.length}</p><button class="btn" id="x">Close</button>`);document.getElementById('x').onclick=closeModal;return;}
+    const w=q[i];const opts=[w.definition];while(opts.length<4){const o=words[Math.floor(Math.random()*words.length)].definition;if(!opts.includes(o))opts.push(o);}opts.sort(()=>Math.random()-.5);
+    openModal(`<div style="display:flex;justify-content:space-between"><h3>🎲 Quiz</h3><button class="btn btn-o btn-s" id="x">Close</button></div>
+    <p style="font-size:.8rem;color:var(--m)">${i+1}/${q.length}</p><p style="font-weight:600;margin:.4rem 0">What does “${w.term}” mean?</p>
+    <div id="qo"></div><div class="fb" id="qf"></div><button class="btn btn-s" id="qn" style="display:none;margin-top:.5rem">Next →</button>`);
+    document.getElementById('x').onclick=closeModal;let answered=false;
+    opts.forEach(o=>{const b=document.createElement('button');b.className='opt';b.textContent=o;b.onclick=()=>{if(answered)return;answered=true;const good=o===w.definition;document.getElementById('qf').className='fb show '+(good?'ok':'bad');
+      document.getElementById('qf').textContent=good?'✅':'❌ '+w.definition;if(good){ok++;score+=10;srsUpdate(w.term,2);}else{srsUpdate(w.term,0);markWrong(w.term);}document.getElementById('qn').style.display='inline-flex';updateStats();save();};document.getElementById('qo').appendChild(b);});
+    document.getElementById('qn').onclick=()=>{i++;show();};
+  }show();
+}
+
+// Activate write
+function startWrite(){const q=[...words].sort(()=>Math.random()-.5);let i=0,ok=0;
+  function show(){if(i>=q.length){openModal(`<h3>✍️ Done</h3><p>${ok}/${q.length} good uses</p><button class="btn" id="x">Close</button>`);document.getElementById('x').onclick=closeModal;return;}
+    const w=q[i];openModal(`<div style="display:flex;justify-content:space-between"><h3>✍️ Write sentences</h3><button class="btn btn-o btn-s" id="x">Close</button></div>
+    <p style="font-size:.8rem;color:var(--m)">${i+1}/${q.length}</p>
+    <div class="def"><strong style="color:var(--p)">${w.term}</strong><br>${w.definition}</div>
+    <textarea id="awi" style="width:100%;min-height:90px;padding:.55rem;border:1.5px solid var(--b);border-radius:10px" placeholder="Your own sentence using the phrase"></textarea>
+    <div style="margin-top:.4rem"><button class="btn btn-s" id="awc">Check &amp; correct</button> <button class="btn btn-o btn-s" id="awh">💡 Model</button></div>
+    <div class="fb" id="awf"></div><button class="btn btn-s" id="awn" style="display:none;margin-top:.5rem">Next →</button>`);
+    document.getElementById('x').onclick=closeModal;let done=false;
+    document.getElementById('awc').onclick=()=>{if(done)return;const t=(document.getElementById('awi').value||'').trim();const fb=document.getElementById('awf');
+      if(t.length<8){fb.className='fb show info';fb.textContent='Write a fuller sentence.';return;}done=true;
+      if(phraseRe(w.term).test(t)){fb.className='fb show ok';fb.innerHTML='✅ You used <strong>'+w.term+'</strong> correctly.';ok++;score+=20;srsUpdate(w.term,2);}
+      else{fb.className='fb show bad';fb.innerHTML='❌ Phrase missing.<br>Model: “'+w.example+'”';srsUpdate(w.term,0);markWrong(w.term);}
+      document.getElementById('awn').style.display='inline-flex';updateStats();save();};
+    document.getElementById('awh').onclick=()=>{document.getElementById('awf').className='fb show info';document.getElementById('awf').textContent='Model: “'+w.example+'”';};
+    document.getElementById('awn').onclick=()=>{i++;show();};
+  }show();
+}
+
+// Activate speak
+function startSpeak(){const q=[...words].sort(()=>Math.random()-.5);let i=0,ok=0;
+  function show(){if(i>=q.length){openModal(`<h3>🗣️ Done</h3><p>${ok}/${q.length}</p><button class="btn" id="x">Close</button>`);document.getElementById('x').onclick=closeModal;return;}
+    const w=q[i];openModal(`<div style="display:flex;justify-content:space-between"><h3>🗣️ Speak sentences</h3><button class="btn btn-o btn-s" id="x">Close</button></div>
+    <p style="font-size:.8rem;color:var(--m)">${i+1}/${q.length}</p>
+    <div class="def"><strong style="color:var(--p)">${w.term}</strong><br>${w.definition}</div>
+    <p style="font-size:.85rem;color:var(--m);margin:.4rem 0">Say a sentence using this phrase.</p>
+    <button class="btn" id="asr">● Record &amp; check</button>
+    <div class="fb" id="asf" style="margin-top:.5rem"></div>
+    <p id="ast" style="font-size:.85rem;color:var(--m);margin-top:.4rem"></p>
+    <button class="btn btn-s" id="asn" style="display:none;margin-top:.5rem">Next →</button>
+    <p style="font-size:.72rem;color:var(--m);margin-top:.5rem">Best in Chrome. Allow microphone when asked.</p>`);
+    document.getElementById('x').onclick=closeModal;let done=false;
+    document.getElementById('asr').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+      if(!SR){document.getElementById('asf').className='fb show info';document.getElementById('asf').textContent='Speech recognition not available. Try Chrome.';return;}
+      const r=new SR();r.lang='en-GB';r.interimResults=true;let final='';
+      document.getElementById('ast').textContent='Listening…';
+      r.onresult=ev=>{for(let j=ev.resultIndex;j<ev.results.length;j++){if(ev.results[j].isFinal)final+=ev.results[j][0].transcript+' ';document.getElementById('ast').textContent=(final+(!ev.results[j].isFinal?ev.results[j][0].transcript:'')).trim();}};
+      r.onend=()=>{const heard=(document.getElementById('ast').textContent||final).trim();if(!heard||done)return;done=true;const fb=document.getElementById('asf');
+        if(phraseRe(w.term).test(heard)){fb.className='fb show ok';fb.innerHTML='Heard: “'+heard+'”<br>✅ Phrase used correctly.';ok++;score+=20;srsUpdate(w.term,2);}
+        else{fb.className='fb show bad';fb.innerHTML='Heard: “'+heard+'”<br>❌ Missing phrase.<br>Model: “'+w.example+'”';srsUpdate(w.term,0);markWrong(w.term);}
+        document.getElementById('asn').style.display='inline-flex';updateStats();save();};
+      try{r.start();}catch(e){document.getElementById('asf').className='fb show info';document.getElementById('asf').textContent='Mic blocked.';}};
+    document.getElementById('asn').onclick=()=>{i++;show();};
+  }show();
+}
+
+// Review
+function startReview(){const due=getDue();const q=due.length?due:[...words].sort((a,b)=>ensureSrs(a.term).nextReview-ensureSrs(b.term).nextReview);let i=0;
+  function show(){if(i>=q.length){openModal(`<h3>🔁 Done</h3><button class="btn" id="x">Close</button>`);document.getElementById('x').onclick=()=>{closeModal();updateStats();};return;}
+    const w=q[i];openModal(`<div style="display:flex;justify-content:space-between"><h3>🔁 Review</h3><button class="btn btn-o btn-s" id="x">Close</button></div>
+    <p style="font-size:.8rem;color:var(--m)">${i+1}/${q.length}</p>
+    <div style="text-align:center;font-size:2rem">${w.emoji}</div>
+    <div style="text-align:center;font-size:1.3rem;font-weight:700;color:var(--p)">${w.term}</div>
+    <button class="btn btn-o btn-s" id="rv" style="margin:.5rem auto;display:block">👁 See meaning</button>
+    <div id="rd" style="display:none" class="def">${w.definition}<br><em>${w.example}</em></div>
+    <div style="display:flex;gap:.4rem;justify-content:center;margin-top:.6rem">
+      <button class="btn btn-s" style="background:#ef4444" id="rh">Hard</button>
+      <button class="btn btn-s" style="background:#f59e0b;color:#111" id="rm">Medium</button>
+      <button class="btn btn-s" style="background:#059669" id="re">Easy</button>
+    </div>`);
+    document.getElementById('x').onclick=closeModal;
+    document.getElementById('rv').onclick=()=>{document.getElementById('rd').style.display='block';};
+    const grade=q=>{if(q===0)markWrong(w.term);srsUpdate(w.term,q===0?0:q===1?1:3);i++;show();};
+    document.getElementById('rh').onclick=()=>grade(0);document.getElementById('rm').onclick=()=>grade(1);document.getElementById('re').onclick=()=>grade(2);
+  }show();
+}
+
+function startProgress(){openModal(`<div style="display:flex;justify-content:space-between"><h3>📊 Progress</h3><button class="btn btn-o btn-s" id="x">Close</button></div>
+  <p>✓ Learned: ${learned.size} · 🔥 Difficult: ${difficult.size} · Total: ${words.length}</p>
+  <div style="max-height:40vh;overflow:auto;margin-top:.5rem">${words.map(w=>{
+    const st=learned.has(w.term)?'✓':difficult.has(w.term)?'🔥':'○';
+    return `<div style="padding:.35rem 0;border-bottom:1px solid var(--b)">${st} ${w.emoji} <strong>${w.term}</strong></div>`;
+  }).join('')}</div>`);document.getElementById('x').onclick=closeModal;}
+
+// YouGlish
+function onYouglishAPIReady(){ygReady=true;try{const w=Math.min(480,Math.max(280,(document.getElementById('yg-widget')||{}).parentElement?.clientWidth||320));
+  ygWidget=new YG.Widget('yg-widget',{width:w,components:255,autoStart:false,events:{onFetchDone:()=>{const l=document.getElementById('yg-loading');if(l)l.style.display='none';},onError:()=>{const l=document.getElementById('yg-loading');if(l)l.innerHTML='Could not load. Try Reload.';}}});
+  if(pendingTerm){ygWidget.fetch(pendingTerm,'english');pendingTerm=null;}}catch(e){}}
+function loadYouGlish(term){if(!term)return;const l=document.getElementById('yg-loading');if(l){l.style.display='flex';l.textContent='🎬 Loading “'+term+'”…';}
+  if(!ygReady||!ygWidget){pendingTerm=term;setTimeout(()=>{if(ygWidget&&pendingTerm){try{ygWidget.fetch(pendingTerm,'english');pendingTerm=null;}catch(e){}}},800);return;}
+  try{ygWidget.fetch(term,'english');}catch(e){if(l)l.innerHTML='Open <a href="https://youglish.com/pronounce/'+encodeURIComponent(term)+'/english" target="_blank" rel="noopener" style="color:#a5b4fc">YouGlish</a>';}}
+window.onYouglishAPIReady=onYouglishAPIReady;
+
+// Wire UI
+document.getElementById('menuToggle').onclick=()=>{document.getElementById('sideMenu').classList.add('open');document.getElementById('menuOverlay').classList.add('show');};
+document.getElementById('menuClose').onclick=document.getElementById('menuOverlay').onclick=()=>{document.getElementById('sideMenu').classList.remove('open');document.getElementById('menuOverlay').classList.remove('show');};
+document.getElementById('backBtn').onclick=()=>{document.getElementById('practicePanel').classList.remove('show');currentIndex=-1;};
+document.getElementById('hearBtn').onclick=()=>{if(currentIndex>=0)speak(words[currentIndex].term);};
+document.getElementById('markLearnedBtn').onclick=()=>{if(currentIndex>=0)markLearned(words[currentIndex].term);};
+document.getElementById('markDifficultBtn').onclick=()=>{if(currentIndex>=0){markWrong(words[currentIndex].term);updateStats();renderGrid();}};
+document.getElementById('ygReloadBtn').onclick=()=>{if(currentIndex>=0)loadYouGlish(words[currentIndex].term);};
+document.getElementById('addWordBtn').onclick=openAddWord;
+document.getElementById('closeAddWordBtn').onclick=()=>document.getElementById('addWordModal').classList.remove('show');
+document.getElementById('saveAddWordBtn').onclick=saveAddWord;
+document.getElementById('imgUploadBtn').onclick=()=>{if(currentIndex<0){alert('Open a word first.');return;}document.getElementById('imgFileInput').click();};
+document.getElementById('imgFileInput').onchange=(e)=>{
+  const f=e.target.files&&e.target.files[0]; if(!f||currentIndex<0)return;
+  if(f.size>2.5*1024*1024){alert('Please use an image under ~2.5 MB.');return;}
+  const reader=new FileReader();
+  reader.onload=()=>{setWordImage(words[currentIndex].term,reader.result);};
+  reader.readAsDataURL(f); e.target.value='';
+};
+document.getElementById('imgGoogleBtn').onclick=()=>{
+  if(currentIndex<0){alert('Open a word first.');return;}
+  const q=encodeURIComponent(words[currentIndex].term+' meaning illustration');
+  window.open('https://www.google.com/search?tbm=isch&q='+q,'_blank','noopener');
+  alert('Find a picture on Google Images, then use “Paste URL” (or Upload) to attach it here.');
+};
+document.getElementById('imgUrlBtn').onclick=()=>{
+  if(currentIndex<0){alert('Open a word first.');return;}
+  const url=prompt('Paste image URL (https://…):');
+  if(url&&url.trim()) setWordImage(words[currentIndex].term,url.trim());
+};
+document.getElementById('imgRemoveBtn').onclick=()=>{
+  if(currentIndex<0)return;
+  setWordImage(words[currentIndex].term,'');
+};
+document.getElementById('dueLine').onclick=startReview;
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.tc').forEach(x=>x.classList.remove('on'));t.classList.add('on');document.getElementById('tab-'+t.dataset.tab).classList.add('on');});
+document.getElementById('checkSpellBtn').onclick=()=>{if(currentIndex<0)return;const w=words[currentIndex];const v=(document.getElementById('spellInput').value||'').trim().toLowerCase();const fb=document.getElementById('spellFb');
+  if(v===w.term.toLowerCase()){fb.className='fb show ok';fb.textContent='✅';score+=10;srsUpdate(w.term,2);}else{fb.className='fb show bad';fb.textContent='❌ '+w.term;srsUpdate(w.term,0);markWrong(w.term);}updateStats();save();};
+document.getElementById('spellHintBtn').onclick=()=>{if(currentIndex<0)return;const t=words[currentIndex].term;document.getElementById('spellFb').className='fb show info';document.getElementById('spellFb').textContent=t[0]+'·'.repeat(Math.max(0,t.length-1));};
+document.getElementById('checkSentBtn').onclick=()=>{if(currentIndex<0)return;const w=words[currentIndex];const t=(document.getElementById('sentInput').value||'').trim();const fb=document.getElementById('sentFb');
+  if(phraseRe(w.term).test(t)){fb.className='fb show ok';fb.innerHTML='✅ Good use of <strong>'+w.term+'</strong>';score+=15;srsUpdate(w.term,2);}else{fb.className='fb show bad';fb.innerHTML='❌ Missing phrase. Model: “'+w.example+'”';srsUpdate(w.term,0);}updateStats();save();};
+document.getElementById('showExBtn').onclick=()=>{if(currentIndex>=0){document.getElementById('sentFb').className='fb show info';document.getElementById('sentFb').textContent=words[currentIndex].example;}};
+
+const acts={match:startMatch,gap:startGap,order:startOrder,hang:startHang,cw:startCw,quiz:startQuiz,write:startWrite,speak:startSpeak,review:startReview,progress:startProgress};
+document.querySelectorAll('[data-act]').forEach(el=>el.onclick=()=>{document.getElementById('sideMenu').classList.remove('open');document.getElementById('menuOverlay').classList.remove('show');(acts[el.dataset.act]||(()=>{}))();});
+
+load();loadCustom();words.forEach(w=>ensureSrs(w.term));renderGrid();updateStats();
+</script>
+</body>
+</html>
