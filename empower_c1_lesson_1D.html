@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0ea5e9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Empower C1 - Lesson 1D</title>
+<style>
+:root{
+  --p:#0ea5e9;--p2:#0284c7;--ps:#e0f2fe;
+  --accent:#f97316;--accent-soft:#ffedd5;
+  --ok:#10b981;--oks:#d1fae5;--bad:#ef4444;--bads:#fee2e2;
+  --t:#0f172a;--m:#64748b;--line:#e2e8f0;
+  --c:#ffffff;--bg:#f0f9ff;
+  --shadow:0 2px 8px rgba(14,165,233,.08);
+  --sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px)
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  background:var(--bg);color:var(--t);min-height:100dvh;
+  padding-bottom:calc(.85rem + var(--sb));overflow-x:hidden;-webkit-text-size-adjust:100%
+}
+input,textarea,button,select{font-size:16px;font-family:inherit}
+header{
+  background:linear-gradient(135deg,#0ea5e9,#6366f1);
+  color:#fff;padding:calc(.4rem + var(--st)) .85rem .45rem;text-align:center;
+  position:sticky;top:0;z-index:50
+}
+header h1{font-size:1.05rem;font-weight:700}
+header p{opacity:.92;font-size:.7rem;margin-top:.08rem}
+.wrap{max-width:540px;margin:0 auto;padding:.45rem .65rem}
+.stats{display:flex;gap:.35rem;margin-bottom:.4rem}
+.stat{flex:1;background:var(--c);border:1px solid var(--line);border-radius:12px;padding:.4rem .3rem;text-align:center;box-shadow:var(--shadow)}
+.stat .n{font-size:1.05rem;font-weight:800;color:var(--t);line-height:1.1}
+.stat .l{font-size:.6rem;color:var(--m);margin-top:.06rem;font-weight:600}
+.due{
+  width:100%;text-align:left;padding:.5rem .7rem;border-radius:12px;border:1.5px solid var(--line);
+  background:var(--c);margin-bottom:.45rem;font-size:.82rem;min-height:44px;
+  display:flex;align-items:center;gap:.45rem;cursor:pointer;box-shadow:var(--shadow)
+}
+.due.has{background:var(--accent-soft);border-color:#fdba74}
+.due .due-ico{font-size:1.05rem;flex-shrink:0}
+.bar{display:flex;gap:.4rem;align-items:center;margin-bottom:.35rem}
+.ham{
+  width:40px;height:40px;border-radius:10px;border:1.5px solid var(--line);background:var(--c);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;flex-shrink:0
+}
+.ham span{display:block;width:15px;height:2px;background:var(--t);border-radius:2px}
+.lesson-tag{margin-left:auto;background:var(--ps);color:var(--p2);border-radius:999px;padding:.28rem .55rem;font-size:.7rem;font-weight:700}
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.35);z-index:180;opacity:0;pointer-events:none;transition:.2s}
+.overlay.show{opacity:1;pointer-events:auto}
+.menu{
+  position:fixed;top:0;left:0;height:100%;width:min(280px,84vw);background:var(--c);
+  z-index:190;transform:translateX(-105%);transition:.25s;overflow-y:auto;padding-bottom:var(--sb);
+  box-shadow:4px 0 20px rgba(14,165,233,.12)
+}
+.menu.open{transform:none}
+.menu h3{padding:.85rem 1rem;border-bottom:1px solid var(--line);font-size:.95rem}
+.sec{font-size:.65rem;text-transform:uppercase;letter-spacing:.05em;color:var(--m);padding:.65rem 1rem .1rem;font-weight:700}
+.mi{display:block;width:100%;text-align:left;border:0;background:0;padding:.65rem 1rem;font-size:.9rem;font-weight:600;color:var(--t)}
+.mi:active{background:var(--ps);color:var(--p2)}
+.section{margin-bottom:.4rem}
+.section-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--m);margin:0 0 .2rem .08rem}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.25rem;
+  background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;border:0;
+  padding:.45rem .65rem;border-radius:12px;font-weight:600;min-height:40px;cursor:pointer;
+  -webkit-user-select:none;user-select:none;box-shadow:0 3px 10px rgba(14,165,233,.22)
+}
+.btn:active{opacity:.9}
+.btn-o{background:var(--c);border:1.5px solid var(--line);color:var(--t);box-shadow:var(--shadow)}
+.btn-o:active{border-color:var(--p);color:var(--p2);background:var(--ps)}
+.btn-s{padding:.32rem .5rem;font-size:.76rem;min-height:34px;border-radius:10px;box-shadow:none}
+.quick .btn{width:100%;font-size:.72rem;flex-direction:column;gap:.1rem;padding:.35rem .1rem;min-height:52px}
+.quick .btn .ico{font-size:1.1rem;line-height:1}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.3rem}
+@media(min-width:400px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{
+  background:var(--c);border:1.5px solid var(--line);border-radius:12px;
+  padding:.5rem .25rem;text-align:center;min-height:64px;position:relative;cursor:pointer;box-shadow:var(--shadow)
+}
+.card:active{border-color:var(--p);background:var(--ps)}
+.card .e{font-size:1.2rem;display:block}
+.card .t{font-weight:650;font-size:.68rem;margin-top:.12rem;word-break:break-word;line-height:1.2}
+.card.learned{border-color:#6ee7b7;background:#ecfdf5}
+.card.hard{border-color:#fdba74;background:#fff7ed}
+.home-block{display:block}
+.home-block.hidden{display:none}
+.panel{display:none;background:var(--c);border:1px solid var(--line);border-radius:14px;padding:.7rem;margin-top:.08rem;box-shadow:var(--shadow)}
+.panel.show{display:block}
+.panel-top{display:flex;gap:.3rem;align-items:flex-start;flex-wrap:wrap;margin-bottom:.35rem;padding-bottom:.4rem;border-bottom:1px solid var(--line)}
+.back{display:inline-flex;align-items:center;gap:.2rem;padding:.3rem .5rem;border-radius:10px;border:1.5px solid var(--line);background:#f8fafc;font-size:.78rem;font-weight:600;min-height:34px;color:var(--t)}
+.panel-actions{display:flex;flex-wrap:wrap;gap:.25rem;width:100%}
+@media(min-width:400px){.panel-actions{width:auto;margin-left:auto}}
+.img-tools{display:flex;flex-wrap:wrap;gap:.25rem;margin:.25rem 0 .35rem}
+.img-tools .btn{min-height:34px;font-size:.74rem}
+.def{background:#e0f2fe;border-left:3px solid var(--p);padding:.5rem .65rem;border-radius:0 10px 10px 0;margin:.3rem 0;font-size:.86rem;line-height:1.35}
+.ex{background:var(--oks);border-left:3px solid var(--ok);padding:.45rem .65rem;border-radius:0 10px 10px 0;margin:.25rem 0 .4rem;font-style:italic;font-size:.84rem;line-height:1.35}
+.tabs{display:flex;flex-wrap:wrap;gap:.2rem;margin:.35rem 0}
+.tab{border:1.5px solid var(--line);background:var(--c);border-radius:999px;padding:.3rem .55rem;font-size:.74rem;font-weight:600;color:var(--m)}
+.tab.on{background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;border-color:transparent}
+.tc{display:none}.tc.on{display:block}
+.fb{margin-top:.6rem;padding:.7rem .85rem;border-radius:12px;display:none;font-size:.9rem}
+.fb.show{display:block}.fb.ok{background:var(--oks);color:#065f46}.fb.bad{background:var(--bads);color:#991b1b}.fb.info{background:#eff6ff;color:#1e40af}
+.modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.4);z-index:200;align-items:flex-end;justify-content:center}
+.modal.show{display:flex}
+.mc{background:#fff;border-radius:16px 16px 0 0;width:100%;max-width:520px;max-height:92dvh;overflow-y:auto;padding:.85rem .8rem calc(.9rem + var(--sb));-webkit-overflow-scrolling:touch}
+@media(min-width:560px){.modal{align-items:center;padding:.85rem}.mc{border-radius:14px}}
+.opt{display:block;width:100%;text-align:left;padding:.6rem .7rem;border:1.5px solid var(--line);border-radius:12px;background:var(--c);margin:.28rem 0;font-size:.86rem}
+.order-bank,.order-slots{display:flex;flex-wrap:wrap;gap:.28rem;min-height:42px;padding:.4rem;border:1.5px dashed var(--line);border-radius:12px;margin:.3rem 0;background:#f8fafc}
+.chip{background:var(--ps);color:var(--p2);border:1.5px solid #7dd3fc;border-radius:999px;padding:.32rem .55rem;font-size:.8rem;font-weight:600}
+.hk{display:grid;grid-template-columns:repeat(7,1fr);gap:.2rem;margin-top:.45rem}
+.hk button{border:1.5px solid var(--line);background:var(--c);border-radius:8px;padding:.35rem 0;font-weight:700;min-height:36px}
+.hk button:disabled{opacity:.35}
+.hl{display:inline-block;min-width:1rem;text-align:center;border-bottom:2px solid var(--line);margin:0 .1rem;font-weight:700;font-size:1.05rem}
+.yg{background:#0f172a;border-radius:12px;min-height:160px;position:relative;overflow:hidden;margin:.35rem 0}
+#yg-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#94a3b8;text-align:center;padding:.6rem;font-size:.82rem}
+footer{text-align:center;font-size:.65rem;color:var(--m);padding:.5rem}
+input,textarea{border:1.5px solid var(--line)!important;background:#f8fafc!important;border-radius:10px!important}
+input:focus,textarea:focus{outline:none;border-color:var(--p)!important;box-shadow:0 0 0 3px rgba(14,165,233,.15)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Empower C1</h1>
+  <p>Lesson 1D · Idioms and opinions</p>
+</header>
+<div class="wrap">
+  <div class="bar">
+    <button class="ham" id="menuToggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <strong style="font-size:.88rem;color:var(--t)">Vocabulary</strong>
+    <span class="lesson-tag">1D</span>
+  </div>
+
+  <div id="homeView" class="home-block">
+    <div class="stats">
+      <div class="stat"><div class="n"><span id="learnedCount">0</span>/<span id="totalWords">0</span></div><div class="l">Learned</div></div>
+      <div class="stat"><div class="n" id="streakCount">0</div><div class="l">Streak</div></div>
+      <div class="stat"><div class="n" id="scoreDisplay">0</div><div class="l">Points</div></div>
+    </div>
+
+    <button class="due" id="dueLine" type="button">
+      <span class="due-ico">🔁</span>
+      <span><strong>Review</strong> · <span id="dueDetail">Nothing due</span></span>
+    </button>
+
+    <div class="section">
+      <div class="section-title">Practice</div>
+      <div class="quick">
+        <button class="btn btn-o" data-act="match" type="button"><span class="ico">🔗</span>Match</button>
+        <button class="btn btn-o" data-act="gap" type="button"><span class="ico">⬜</span>Gaps</button>
+        <button class="btn btn-o" data-act="order" type="button"><span class="ico">🔀</span>Order</button>
+        <button class="btn btn-o" data-act="quiz" type="button"><span class="ico">❓</span>Quiz</button>
+        <button class="btn btn-o" data-act="hang" type="button"><span class="ico">🪢</span>Hangman</button>
+        <button class="btn btn-o" data-act="review" type="button"><span class="ico">🔁</span>Review</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Use it</div>
+      <div class="quick" style="grid-template-columns:1fr 1fr">
+        <button class="btn btn-o" data-act="write" type="button"><span class="ico">✍️</span>Write</button>
+        <button class="btn btn-o" data-act="speak" type="button"><span class="ico">🗣️</span>Speak</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Words</div>
+      <div style="display:flex;gap:.4rem;margin-bottom:.5rem">
+        <button type="button" class="btn" id="addWordBtn" style="flex:1">＋ Add word</button>
+        <button type="button" class="btn btn-o" data-act="progress">📊</button>
+      </div>
+      <div class="grid" id="wordGrid"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="practicePanel">
+    <div class="panel-top">
+      <button class="back" id="backBtn" type="button">← Back</button>
+      <span id="currentEmoji" style="font-size:1.5rem"></span>
+      <div style="flex:1;min-width:100px">
+        <div id="currentTerm" style="font-size:1.1rem;font-weight:700;color:var(--p)"></div>
+        <div id="currentPhonetic" style="font-size:.75rem;color:var(--m);font-style:italic"></div>
+      </div>
+      <div class="panel-actions">
+        <button class="btn btn-s" id="hearBtn" type="button">🔊</button>
+        <button class="btn btn-o btn-s" id="markLearnedBtn" type="button">✓</button>
+        <button class="btn btn-o btn-s" id="markDifficultBtn" type="button">!</button>
+      </div>
+    </div>
+    <div class="def" id="definitionBox"></div>
+    <div class="ex" id="exampleBox"></div>
+    <div id="wordImageWrap" style="display:none;margin:.5rem 0;border-radius:12px;overflow:hidden;background:#e2e8f0;max-height:180px">
+      <img id="wordImage" alt="" style="width:100%;max-height:180px;object-fit:cover;display:block">
+    </div>
+    <div class="img-tools">
+      <button type="button" class="btn btn-o btn-s" id="imgUploadBtn">📷</button>
+      <button type="button" class="btn btn-o btn-s" id="imgGoogleBtn">🔎 Google</button>
+      <button type="button" class="btn btn-o btn-s" id="imgUrlBtn">🔗 URL</button>
+      <button type="button" class="btn btn-o btn-s" id="imgRemoveBtn">✕</button>
+      <input type="file" id="imgFileInput" accept="image/*" style="display:none">
+    </div>
+    <div class="yg"><div id="yg-widget"></div><div id="yg-loading">Loading…</div></div>
+    <button class="btn btn-s" id="ygReloadBtn" type="button" style="margin-bottom:.45rem">↻ Videos</button>
+    <div class="tabs">
+      <button class="tab on" data-tab="mc" type="button">Meaning</button>
+      <button class="tab" data-tab="spell" type="button">Spelling</button>
+      <button class="tab" data-tab="write" type="button">Sentence</button>
+    </div>
+    <div class="tc on" id="tab-mc"><p id="mcQ" style="font-weight:600;margin-bottom:.4rem"></p><div id="mcOpts"></div><div class="fb" id="mcFb"></div></div>
+    <div class="tc" id="tab-spell"><p id="spellPrompt" style="font-weight:600;margin-bottom:.4rem"></p>
+      <input id="spellInput" style="width:100%;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin-bottom:.4rem" placeholder="Type the phrase">
+      <button class="btn btn-s" id="checkSpellBtn" type="button">Check</button>
+      <button class="btn btn-o btn-s" id="spellHintBtn" type="button">Hint</button>
+      <div class="fb" id="spellFb"></div>
+    </div>
+    <div class="tc" id="tab-write"><p style="margin-bottom:.4rem">Write a sentence with <strong id="writeWord"></strong></p>
+      <textarea id="sentInput" style="width:100%;min-height:80px;padding:.55rem;border:1.5px solid var(--b);border-radius:10px" placeholder="Your sentence…"></textarea>
+      <div style="margin-top:.4rem"><button class="btn btn-s" id="checkSentBtn" type="button">Check</button>
+      <button class="btn btn-o btn-s" id="showExBtn" type="button">Show example</button></div>
+      <div class="fb" id="sentFb"></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="menuOverlay"></div>
+<nav class="menu" id="sideMenu">
+  <h3>Menu <button class="btn btn-o btn-s" id="menuClose" style="float:right" type="button">✕</button></h3>
+  <div class="sec">Practice</div>
+  <button class="mi" data-act="match" type="button">🔗 Match</button>
+  <button class="mi" data-act="gap" type="button">⬜ Gaps</button>
+  <button class="mi" data-act="order" type="button">🔀 Order</button>
+  <button class="mi" data-act="quiz" type="button">❓ Quiz</button>
+  <button class="mi" data-act="hang" type="button">🪢 Hangman</button>
+  <div class="sec">Use it</div>
+  <button class="mi" data-act="write" type="button">✍️ Write</button>
+  <button class="mi" data-act="speak" type="button">🗣️ Speak</button>
+  <div class="sec">Progress</div>
+  <button class="mi" data-act="review" type="button">🔁 Review</button>
+  <button class="mi" data-act="progress" type="button">📊 Progress</button>
+</nav>
+
+<div class="modal" id="gameModal"><div class="mc" id="gameBody"></div></div>
+
+<div class="modal" id="addWordModal">
+  <div class="mc">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
+      <h3>Add new word</h3>
+      <button type="button" class="btn btn-o btn-s" id="closeAddWordBtn">Close</button>
+    </div>
+    <label style="font-size:.8rem;color:var(--m)">Term / phrase *</label>
+    <input id="awTerm" style="width:100%;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.25rem 0 .55rem" placeholder="e.g. give or take">
+    <label style="font-size:.8rem;color:var(--m)">Definition *</label>
+    <textarea id="awDef" style="width:100%;min-height:70px;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.25rem 0 .55rem" placeholder="Meaning"></textarea>
+    <label style="font-size:.8rem;color:var(--m)">Example sentence</label>
+    <textarea id="awEx" style="width:100%;min-height:60px;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.25rem 0 .55rem" placeholder="A sentence using the phrase"></textarea>
+    <label style="font-size:.8rem;color:var(--m)">Phonetic (optional)</label>
+    <input id="awPhon" style="width:100%;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.25rem 0 .55rem">
+    <label style="font-size:.8rem;color:var(--m)">Emoji (optional)</label>
+    <input id="awEmoji" style="width:100%;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.25rem 0 .75rem" placeholder="📝" maxlength="4">
+    <button type="button" class="btn" id="saveAddWordBtn" style="width:100%">Save word</button>
+  </div>
+</div>
+
+<footer style="padding-bottom:calc(.4rem + var(--sb))">Lesson 1D · Progress saved on this device</footer>
+<script src="https://youglish.com/public/emb/widget.js" async></script>
+<script>
+const STORAGE_KEY = 'empower_c1_1D_v3';
+const CUSTOM_KEY = STORAGE_KEY + '_custom';
+const IMAGE_KEY = STORAGE_KEY + '_images';
+
+const builtInWords = [
+  {term:"bite your tongue",phonetic:"",definition:"stop yourself saying something that could start a fight",example:"I bit my tongue when he criticized my work.",emoji:"🤐"},
+  {term:"fight tooth and nail",phonetic:"",definition:"try extremely hard to get or keep something",example:"They fought tooth and nail to save the business.",emoji:"🦷"},
+  {term:"head and shoulders above",phonetic:"",definition:"much better than everyone or everything else",example:"She's head and shoulders above the other candidates.",emoji:"🏆"},
+  {term:"safe pair of hands",phonetic:"",definition:"someone you can fully trust to handle things well",example:"He's a safe pair of hands, so I gave him the project.",emoji:"🤝"},
+  {term:"stick your neck out",phonetic:"",definition:"take a risk by saying something bold or backing someone",example:"I'll stick my neck out and say this plan won't work.",emoji:"🦒"},
+  {term:"How can you possibly think that?",phonetic:"",definition:"a strong way to show disbelief or disagreement",example:"How can you possibly think that was a good idea?",emoji:"😲"},
+  {term:"That's a load of rubbish.",phonetic:"",definition:"a blunt way to say something is completely untrue or nonsense",example:"That's a load of rubbish — the figures don't support it.",emoji:"🗑️"},
+  {term:"You're spot on there.",phonetic:"",definition:"a way to say someone is exactly right",example:"You're spot on there — that was the main problem.",emoji:"🎯"},
+  {term:"You've hit the nail on the head.",phonetic:"",definition:"a way to say someone has described something perfectly",example:"You've hit the nail on the head — that is exactly how I felt.",emoji:"🔨"},
+  {term:"I would go along with that.",phonetic:"",definition:"a mild way to agree",example:"I would go along with that, at least for now.",emoji:"👍"},
+  {term:"I'm in two minds about this.",phonetic:"",definition:"a way to say you can't decide, torn between two views",example:"I'm in two minds about this — both options have risks.",emoji:"🤔"},
+  {term:"I agree up to a point.",phonetic:"",definition:"a way to say you agree, but not completely",example:"I agree up to a point, but the cost is still too high.",emoji:"⚖️"}
+];
+
+let words = builtInWords.slice();
+let wordImages = {};
+let currentIndex = -1, score = 0, streak = 0;
+let learned = new Set(), difficult = new Set(), learning = new Set(), srs = {};
+let ygWidget = null, ygReady = false, pendingTerm = null;
+
+function loadCustom() {
+  try {
+    var custom = [];
+    try { custom = JSON.parse(localStorage.getItem(CUSTOM_KEY) || '[]'); } catch (e) { custom = []; }
+    if (!Array.isArray(custom)) custom = [];
+    try { wordImages = JSON.parse(localStorage.getItem(IMAGE_KEY) || '{}') || {}; } catch (e) { wordImages = {}; }
+    var map = {};
+    for (var i = 0; i < builtInWords.length; i++) {
+      var w = builtInWords[i];
+      var copy = { term: w.term, phonetic: w.phonetic || '', definition: w.definition, example: w.example, emoji: w.emoji || '📝' };
+      if (wordImages[w.term]) copy.image = wordImages[w.term];
+      map[w.term.toLowerCase()] = copy;
+    }
+    for (var j = 0; j < custom.length; j++) {
+      var c = custom[j];
+      if (!c || !c.term) continue;
+      map[String(c.term).toLowerCase()] = {
+        term: c.term, phonetic: c.phonetic || '', definition: c.definition || '', example: c.example || '',
+        emoji: c.emoji || '📝', custom: true, image: wordImages[c.term] || c.image || ''
+      };
+    }
+    var keys = Object.keys(map);
+    var merged = [];
+    for (var k = 0; k < keys.length; k++) merged.push(map[keys[k]]);
+    words = merged.length ? merged : builtInWords.slice();
+  } catch (e) {
+    words = builtInWords.slice();
+  }
+}
+
+function saveCustomList() {
+  var custom = [];
+  for (var i = 0; i < words.length; i++) {
+    if (words[i].custom) custom.push({ term: words[i].term, phonetic: words[i].phonetic || '', definition: words[i].definition || '', example: words[i].example || '', emoji: words[i].emoji || '📝' });
+  }
+  localStorage.setItem(CUSTOM_KEY, JSON.stringify(custom));
+  localStorage.setItem(IMAGE_KEY, JSON.stringify(wordImages));
+}
+
+function setWordImage(term, url) {
+  if (!term) return;
+  if (url) wordImages[term] = url; else delete wordImages[term];
+  for (var i = 0; i < words.length; i++) {
+    if (words[i].term === term) { words[i].image = url || ''; break; }
+  }
+  localStorage.setItem(IMAGE_KEY, JSON.stringify(wordImages));
+  showWordImage(term);
+}
+
+function showWordImage(term) {
+  var wrap = document.getElementById('wordImageWrap');
+  var img = document.getElementById('wordImage');
+  if (!wrap || !img) return;
+  var url = '';
+  for (var i = 0; i < words.length; i++) {
+    if (words[i].term === term) { url = words[i].image || ''; break; }
+  }
+  if (!url) url = wordImages[term] || '';
+  if (url) {
+    img.src = url;
+    wrap.style.display = 'block';
+    img.onerror = function () { wrap.style.display = 'none'; };
+  } else {
+    wrap.style.display = 'none';
+    img.removeAttribute('src');
+  }
+}
+
+function openAddWord() {
+  document.getElementById('awTerm').value = '';
+  document.getElementById('awDef').value = '';
+  document.getElementById('awEx').value = '';
+  document.getElementById('awPhon').value = '';
+  document.getElementById('awEmoji').value = '📝';
+  document.getElementById('addWordModal').classList.add('show');
+}
+
+function saveAddWord() {
+  var term = (document.getElementById('awTerm').value || '').trim();
+  var definition = (document.getElementById('awDef').value || '').trim();
+  var example = (document.getElementById('awEx').value || '').trim();
+  var phonetic = (document.getElementById('awPhon').value || '').trim();
+  var emoji = (document.getElementById('awEmoji').value || '📝').trim() || '📝';
+  if (!term || !definition) { alert('Term and definition are required.'); return; }
+  for (var i = 0; i < words.length; i++) {
+    if (words[i].term.toLowerCase() === term.toLowerCase()) { alert('This term already exists.'); return; }
+  }
+  words.push({ term: term, definition: definition, example: example || ('I used "' + term + '" in a sentence.'), phonetic: phonetic, emoji: emoji, custom: true, image: '' });
+  ensureSrs(term);
+  saveCustomList();
+  save();
+  renderGrid();
+  updateStats();
+  document.getElementById('addWordModal').classList.remove('show');
+  alert('Saved. Open the card to attach a picture if you like.');
+}
+
+function load() {
+  try {
+    var d = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    score = d.score || 0;
+    streak = d.streak || 0;
+    learned = new Set(d.learned || []);
+    difficult = new Set(d.difficult || []);
+    learning = new Set(d.learning || []);
+    srs = d.srs || {};
+  } catch (e) {}
+}
+
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    score: score, streak: streak,
+    learned: Array.from(learned), difficult: Array.from(difficult), learning: Array.from(learning),
+    srs: srs
+  }));
+}
+
+function ensureSrs(t) {
+  if (!srs[t]) srs[t] = { ease: 2.5, interval: 0, repetitions: 0, nextReview: Date.now() };
+  return srs[t];
+}
+
+function srsUpdate(t, q) {
+  var c = ensureSrs(t);
+  if (q === 0) { c.repetitions = 0; c.interval = 0.01; }
+  else {
+    c.repetitions++;
+    if (c.repetitions === 1) c.interval = 1;
+    else if (c.repetitions === 2) c.interval = 3;
+    else c.interval = Math.round(c.interval * c.ease);
+    c.ease = Math.max(1.3, c.ease + 0.1);
+  }
+  c.nextReview = Date.now() + c.interval * 86400000;
+  save();
+  return c;
+}
+
+function getDue() {
+  var due = [];
+  for (var i = 0; i < words.length; i++) {
+    if (ensureSrs(words[i].term).nextReview <= Date.now()) due.push(words[i]);
+  }
+  return due;
+}
+
+function markWrong(t) { difficult.add(t); learned.delete(t); learning.add(t); save(); }
+function markLearned(t) { learned.add(t); difficult.delete(t); learning.delete(t); srsUpdate(t, 3); save(); updateStats(); renderGrid(); }
+
+function speak(t) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(t);
+  u.lang = 'en-GB';
+  u.rate = 0.9;
+  speechSynthesis.speak(u);
+}
+
+function phraseRe(t) {
+  return new RegExp('\\b' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+') + '\\b', 'i');
+}
+
+function updateStats() {
+  document.getElementById('learnedCount').textContent = learned.size;
+  document.getElementById('totalWords').textContent = words.length;
+  document.getElementById('streakCount').textContent = streak;
+  document.getElementById('scoreDisplay').textContent = score;
+  var due = getDue();
+  var line = document.getElementById('dueLine');
+  var det = document.getElementById('dueDetail');
+  if (due.length) {
+    line.classList.add('has');
+    var names = [];
+    for (var i = 0; i < Math.min(3, due.length); i++) names.push(due[i].term);
+    det.textContent = due.length + ' phrase(s): ' + names.join(', ');
+  } else {
+    line.classList.remove('has');
+    det.textContent = 'Nothing due — keep practising';
+  }
+}
+
+function renderGrid() {
+  var g = document.getElementById('wordGrid');
+  if (!g) return;
+  g.innerHTML = '';
+  for (var i = 0; i < words.length; i++) {
+    (function (idx) {
+      var w = words[idx];
+      var d = document.createElement('div');
+      d.className = 'card';
+      if (learned.has(w.term)) d.className += ' learned';
+      else if (difficult.has(w.term)) d.className += ' hard';
+      var badge = '';
+      if (learned.has(w.term)) badge = '✓';
+      else if (difficult.has(w.term)) badge = '!';
+      d.innerHTML = (badge ? '<span style="position:absolute;top:4px;right:6px;font-size:.7rem">' + badge + '</span>' : '') +
+        '<span class="e">' + (w.emoji || '📝') + '</span><span class="t">' + w.term + '</span>';
+      d.onclick = function () { selectWord(idx); };
+      g.appendChild(d);
+    })(i);
+  }
+}
+
+function showHome() {
+  var home = document.getElementById('homeView');
+  var panel = document.getElementById('practicePanel');
+  if (home) home.classList.remove('hidden');
+  if (panel) panel.classList.remove('show');
+  currentIndex = -1;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectWord(i) {
+  currentIndex = i;
+  var w = words[i];
+  var home = document.getElementById('homeView');
+  if (home) home.classList.add('hidden');
+  document.getElementById('practicePanel').classList.add('show');
+  document.getElementById('currentEmoji').textContent = w.emoji || '📝';
+  document.getElementById('currentTerm').textContent = w.term;
+  document.getElementById('currentPhonetic').textContent = w.phonetic || '';
+  document.getElementById('definitionBox').innerHTML = '<strong>Meaning</strong><br>' + w.definition;
+  document.getElementById('exampleBox').innerHTML = '<strong>Example</strong><br>"' + (w.example || '') + '"';
+  document.getElementById('writeWord').textContent = w.term;
+  showWordImage(w.term);
+  loadYouGlish(w.term);
+  genMC();
+  document.getElementById('spellPrompt').textContent = w.definition;
+  document.getElementById('practicePanel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function genMC() {
+  if (currentIndex < 0) return;
+  var w = words[currentIndex];
+  var opts = [w.definition];
+  while (opts.length < 4) {
+    var o = words[Math.floor(Math.random() * words.length)].definition;
+    if (opts.indexOf(o) < 0) opts.push(o);
+  }
+  opts.sort(function () { return Math.random() - 0.5; });
+  document.getElementById('mcQ').textContent = 'What does "' + w.term + '" mean?';
+  var box = document.getElementById('mcOpts');
+  box.innerHTML = '';
+  for (var i = 0; i < opts.length; i++) {
+    (function (opt) {
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = opt;
+      b.onclick = function () {
+        var fb = document.getElementById('mcFb');
+        var ok = opt === w.definition;
+        fb.className = 'fb show ' + (ok ? 'ok' : 'bad');
+        fb.textContent = ok ? 'Correct!' : w.definition;
+        if (ok) { score += 10; srsUpdate(w.term, 2); }
+        else { srsUpdate(w.term, 0); markWrong(w.term); }
+        updateStats();
+        save();
+      };
+      box.appendChild(b);
+    })(opts[i]);
+  }
+  document.getElementById('mcFb').classList.remove('show');
+}
+
+function openModal(html) {
+  document.getElementById('gameBody').innerHTML = html;
+  document.getElementById('gameModal').classList.add('show');
+}
+function closeModal() {
+  document.getElementById('gameModal').classList.remove('show');
+}
+
+function startMatch() {
+  var sel = words.slice().sort(function () { return Math.random() - 0.5; }).slice(0, Math.min(6, words.length));
+  var matched = 0, selId = null;
+  openModal('<div style="display:flex;justify-content:space-between;align-items:center"><h3>Match</h3><button class="btn btn-o btn-s" id="x">Close</button></div>' +
+    '<p style="font-size:.85rem;color:var(--m);margin:.4rem 0">Tap a phrase, then its definition.</p>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem"><div id="mt"></div><div id="md"></div></div>' +
+    '<p style="text-align:center;margin-top:.6rem;font-weight:600" id="ms">Matched: 0 / ' + sel.length + '</p>');
+  document.getElementById('x').onclick = closeModal;
+  var mt = document.getElementById('mt'), md = document.getElementById('md');
+  var left = sel.slice().sort(function () { return Math.random() - 0.5; });
+  var right = sel.slice().sort(function () { return Math.random() - 0.5; });
+  for (var i = 0; i < left.length; i++) {
+    (function (w) {
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = (w.emoji || '') + ' ' + w.term;
+      b.setAttribute('data-id', w.term);
+      b.onclick = function () {
+        selId = w.term;
+        var opts = mt.querySelectorAll('.opt');
+        for (var j = 0; j < opts.length; j++) opts[j].style.outline = '';
+        b.style.outline = '2px solid var(--p)';
+      };
+      mt.appendChild(b);
+    })(left[i]);
+  }
+  for (var i = 0; i < right.length; i++) {
+    (function (w) {
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.textContent = w.definition;
+      b.setAttribute('data-id', w.term);
+      b.onclick = function () {
+        if (!selId) return;
+        if (selId === w.term) {
+          b.disabled = true;
+          var leftBtn = mt.querySelector('[data-id="' + selId + '"]');
+          if (leftBtn) leftBtn.disabled = true;
+          matched++;
+          document.getElementById('ms').textContent = 'Matched: ' + matched + ' / ' + sel.length;
+          score += 15;
+          srsUpdate(w.term, 2);
+          selId = null;
+          updateStats();
+          save();
+        } else {
+          b.style.borderColor = '#f87171';
+          setTimeout(function () { b.style.borderColor = ''; }, 500);
+          srsUpdate(selId, 0);
+          markWrong(selId);
+        }
+      };
+      md.appendChild(b);
+    })(right[i]);
+  }
+}
+
+function startGap() {
+  var q = words.slice().sort(function () { return Math.random() - 0.5; });
+  var i = 0, ok = 0;
+  function show() {
+    if (i >= q.length) {
+      openModal('<h3>Gaps done</h3><p>' + ok + '/' + q.length + ' correct</p><button class="btn" id="x">Close</button>');
+      document.getElementById('x').onclick = closeModal;
+      return;
+    }
+    var w = q[i];
+    var re = new RegExp(w.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+    var gapped = re.test(w.example) ? w.example.replace(re, '______') : ('______ — ' + w.definition);
+    openModal('<div style="display:flex;justify-content:space-between"><h3>Fill the gaps</h3><button class="btn btn-o btn-s" id="x">Close</button></div>' +
+      '<p style="font-size:.8rem;color:var(--m)">' + (i + 1) + ' / ' + q.length + '</p>' +
+      '<div class="def">' + gapped + '</div><p style="font-size:.85rem;color:var(--m)">Meaning: ' + w.definition + '</p>' +
+      '<input id="gi" style="width:100%;padding:.55rem;border:1.5px solid var(--b);border-radius:10px;margin:.4rem 0" placeholder="Type the phrase">' +
+      '<button class="btn btn-s" id="gc">Check</button> <button class="btn btn-o btn-s" id="gh">Hint</button>' +
+      '<div class="fb" id="gf"></div><button class="btn btn-s" id="gn" style="display:none;margin-top:.5rem">Next</button>');
+    document.getElementById('x').onclick = closeModal;
+    var done = false;
+    document.getElementById('gc').onclick = function () {
+      if (done) return;
+      var v = (document.getElementById('gi').value || '').trim().toLowerCase();
+      var fb = document.getElementById('gf');
+      done = true;
+      if (v === w.term.toLowerCase()) {
+        fb.className = 'fb show ok';
+        fb.textContent = 'Correct!';
+        ok++;
+        score += 15;
+        srsUpdate(w.term, 2);
+      } else {
+        fb.className = 'fb show bad';
+        fb.innerHTML = '<strong>' + w.term + '</strong>';
+        srsUpdate(w.term, 0);
+        markWrong(w.term);
+      }
+      document.getElementById('gn').style.display = 'inline-flex';
+      updateStats();
+      save();
+    };
+    document.getElementById('gh').onclick = function () {
+      document.getElementById('gf').className = 'fb show info';
+      document.getElementById('gf').textContent = 'Hint: ' + w.term[0] + Array(Math.max(0, w.term.length - 1) + 1).join('·');
+    };
+    document.getElementById('gn').onclick = function () { i++; show(); };
+  }
+  show();
+}
+
+function startOrder() {
+  var q = [];
+  for (var n = 0; n < words.length; n++) {
+    if ((words[n].example || '').split(/\s+/).length >= 3) q.push(words[n]);
+  }
+  q.sort(function () { return Math.random() - 0.5; });
+  var i = 0, ok = 0;
+  function tok(s) { return (s || '').match(/[\w'-]+|[.,!?;:]/g) || []; }
+  function show() {
+    if (i >= q.length) {
+      openModal('<h3>Done</h3><p>' + ok + '/' + q.length + '</p><button class="btn" id="x">Close</button>');
+      document.getElementById('x').onclick = closeModal;
+      return;
+    }
+    var w = q[i];
+    var tokens = tok(w.example);
+    var picked = [];
+    var answered = false;
+    function render() {
+      var slots = document.getElementById('os');
+      var bank = document.getElementById('ob');
+      slots.innerHTML = '';
+      bank.innerHTML = '';
+      for (var p = 0; p < picked.length; p++) {
+        (function (t, ix) {
+          var b = document.createElement('button');
+          b.className = 'chip';
+          b.textContent = t;
+          b.onclick = function () { if (!answered) { picked.splice(ix, 1); render(); } };
+          slots.appendChild(b);
+        })(picked[p], p);
+      }
+      var rem = tokens.slice();
+      for (var p = 0; p < picked.length; p++) {
+        var ix = rem.indexOf(picked[p]);
+        if (ix >= 0) rem.splice(ix, 1);
+      }
+      rem.sort(function () { return Math.random() - 0.5; });
+      for (var r = 0; r < rem.length; r++) {
+        (function (t) {
+          var b = document.createElement('button');
+          b.className = 'chip';
+          b.textContent = t;
+          b.onclick = function () { if (!answered) { picked.push(t); render(); } };
+          bank.appendChild(b);
+        })(rem[r]);
+      }
+    }
+    openModal('<div style="display:flex;justify-content:space-between"><h3>Word order</h3><button class="btn btn-o btn-s" id="x">Close</button></div>' +
+      '<p style="font-size:.8rem;color:var(--m)">' + (i + 1) + '/' + q.length + '</p><p style="font-size:.85rem;color:var(--m)">' + w.definition + '</p>' +
+      '<div class="order-slots" id="os"></div><div class="order-bank" id="ob"></div>' +
+      '<button class="btn btn-s" id="oc">Check</button> <button class="btn btn-o btn-s" id="oh">Hint</button>' +
+      '<div class="fb" id="of"></div><button class="btn btn-s" id="on" style="display:none;margin-top:.5rem">Next</button>');
+    document.getElementById('x').onclick = closeModal;
+    render();
+    document.getElementById('oc').onclick = function () {
+      if (answered) return;
+      answered = true;
+      var got = picked.join(' ').replace(/\s+([.,!?;:])/g, '$1').trim();
+      var target = tokens.join(' ').replace(/\s+([.,!?;:])/g, '$1').trim();
+      var fb = document.getElementById('of');
+      if (got.toLowerCase() === target.toLowerCase()) {
+        fb.className = 'fb show ok';
+        fb.textContent = 'Perfect!';
+        ok++;
+        score += 20;
+        srsUpdate(w.term, 2);
+      } else {
+        fb.className = 'fb show bad';
+        fb.textContent = w.example;
+        srsUpdate(w.term, 0);
+        markWrong(w.term);
+      }
+      document.getElementById('on').style.display = 'inline-flex';
+      updateStats();
+      save();
+    };
+    document.getElementById('oh').onclick = function () {
+      var n = tokens[picked.length];
+      document.getElementById('of').className = 'fb show info';
+      document.getElementById('of').textContent = n ? ('Next starts with "' + n[0] + '"') : 'Press Check';
+    };
+    document.getElementById('on').onclick = function () { i++; show(); };
+  }
+  show();
+}
+
+function startHang() {
+  var q = words.slice().sort(function () { return Math.random() - 0.5; });
+  var i = 0, ok = 0;
+  function letters(t) { return t.toLowerCase().replace(/[^a-z]/g, ''); }
+  function show() {
+    if (i >= q.length) {
+      openModal('<h3>Done</h3><p>Won ' + ok + '/' + q.length + '</p><button class="btn" id="x">Close</button>');
+      document.getElementById('x').onclick = closeModal;
+      return;
+    }
+    var w = q[i];
+    var lives = 6, guessed = {}, done = false;
+    function draw() {
+      var pure = letters(w.term);
+      var word = '';
+      for (var c = 0; c < w.term.length; c++) {
+        var ch = w.term[c];
+        if (/[a-z]/i.test(ch)) word += '<span class="hl">' + (guessed[ch.toLowerCase()] ? ch : '_') + '</span>';
+        else word += '<span class="hl">' + ch + '</span>';
+      }
+      document.getElementById('hw').innerHTML = word;
+      document.getElementById('hp').textContent = (i + 1) + '/' + q.length + ' · Lives: ' + lives;
+      var keys = document.getElementById('hk');
+      keys.innerHTML = '';
+      var alphabet = 'abcdefghijklmnopqrstuvwxyz';
+      for (var a = 0; a < alphabet.length; a++) {
+        (function (L) {
+          var b = document.createElement('button');
+          b.textContent = L.toUpperCase();
+          if (guessed[L]) {
+            b.disabled = true;
+            b.style.background = pure.indexOf(L) >= 0 ? '#ecfdf5' : '#fef2f2';
+          }
+          b.onclick = function () { guess(L); };
+          keys.appendChild(b);
+        })(alphabet[a]);
+      }
+    }
+    function guess(L) {
+      if (done || guessed[L]) return;
+      guessed[L] = true;
+      var pure = letters(w.term);
+      if (pure.indexOf(L) < 0) lives--;
+      draw();
+      var allFound = true;
+      for (var c = 0; c < pure.length; c++) {
+        if (!guessed[pure[c]]) { allFound = false; break; }
+      }
+      if (allFound) {
+        done = true;
+        document.getElementById('hf').className = 'fb show ok';
+        document.getElementById('hf').textContent = w.term;
+        ok++;
+        score += 15;
+        srsUpdate(w.term, 2);
+        document.getElementById('hn').style.display = 'inline-flex';
+        updateStats();
+        save();
+      } else if (lives <= 0) {
+        done = true;
+        document.getElementById('hf').className = 'fb show bad';
+        document.getElementById('hf').textContent = w.term;
+        srsUpdate(w.term, 0);
+        markWrong(w.term);
+        document.getElementById('hn').style.display = 'inline-flex';
+        updateStats();
+        save();
+      }
+    }
+    openModal('<div style="display:flex;justify-content:space-between"><h3>Hangman</h3><button class="btn btn-o btn-s" id="x">Close</button></div>' +
+      '<p id="hp" style="font-size:.85rem;color:var(--m)"></p><p style="text-align:center;font-size:.9rem">' + w.definition + '</p>' +
+      '<div style="text-align:center;margin:.6rem 0" id="hw"></div><div class="hk" id="hk"></div>' +
+      '<div style="margin-top:.5rem"><button class="btn btn-o btn-s" id="hh">Hint</button></div>' +
+      '<div class="fb" id="hf"></div><button class="btn btn-s" id="hn" style="display:none;margin-top:.5rem">Next</button>');
+    document.getElementById('x').onclick = closeModal;
+    document.getElementById('hh').onclick = function () {
+      var pure = letters(w.term);
+      var miss = [];
+      for (var c = 0; c < pure.length; c++) {
+        if (!guessed[pure[c]]) miss.push(pure[c]);
+      }
+      if (miss.length) guess(miss[Math.floor(Math.random() * miss.length)]);
+    };
+    document.getElementById('hn').onclick = function () { i++; show(); };
+    draw();
+  }
+  show();
+}
+
+function startCw() {
+  var items = words.slice().sort(function () { return Math.random() - 0.5; }).slice(0, Math.min(8, words.length));
+  var focus = 0;
+  openModal('<div style="display:flex;justify-content:space-between"><h3>Crossword clues</h3><button class="btn btn-o btn-s" id="x">Close</button></div>' +
+    '<div id="cl"></div><div style="margin-top:.6rem"><button class="btn btn-s" id="cc">Check all</button> <button class="btn btn-o btn-s" id="ch">Hint</button></div>' +
+    '<div class="fb" id="cf"></div>');
+  document.getElementById('x').onclick = closeModal;
+  var cl = document.getElementById('cl');
+  for (var i = 0; i < items.length; i++) {
+    var w = items[i];
+    var r = document.createElement('div');
+    r.className = 'cw-row';
+    r.innerHTML = '<div class="cw-n">' + (i + 1) + '</div><div><div style="font-size:.9rem">' + w.definition + '</div><input class="cw-in" data-i="' + i + '" placeholder="' + w.term.length + ' characters"></div>';
+    cl.appendChild(r);
+  }
+  var inputs = cl.querySelectorAll('.cw-in');
+  for (var j = 0; j < inputs.length; j++) {
+    inputs[j].addEventListener('focus', function () { focus = +this.getAttribute('data-i'); });
+  }
+  document.getElementById('cc').onclick = function () {
+    var ok = 0;
+    for (var i = 0; i < items.length; i++) {
+      var inp = cl.querySelector('[data-i="' + i + '"]');
+      var v = (inp.value || '').trim().toLowerCase();
+      if (v === items[i].term.toLowerCase()) {
+        inp.style.borderColor = '#34d399';
+        ok++;
+        srsUpdate(items[i].term, 2);
+      } else {
+        inp.style.borderColor = '#f87171';
+        if (v) { srsUpdate(items[i].term, 0); markWrong(items[i].term); }
+      }
+    }
+    document.getElementById('cf').className = 'fb show info';
+    document.getElementById('cf').textContent = ok + ' / ' + items.length + ' correct';
+    updateStats();
+    save();
+  };
+  document.getElementById('ch').onclick = function () {
+    var w = items[focus];
+    var inp = cl.querySelector('[data-i="' + focus + '"]');
+    if (!w || !inp) return;
+    var cur = inp.value || '';
+    inp.value = w.term.slice(0, Math.min(cur.length + 1, w.term.length));
+  };
+}
+
+function startQuiz() {
+  var q = words.slice().sort(function () { return Math.random() - 0.5; });
+  var i = 0, ok = 0;
+  function show() {
+    if (i >= q.length) {
+      openModal('<h3>Done</h3><p>' + ok + '/' + q.length + '</p><button class="btn" id="x">Close</button>');
+      document.getElementById('x').onclick = closeModal;
+      return;
+    }
+    var w = q[i];
+    var opts = [w.definition];
+    while (opts.length < 4) {
+      var o = words[Math.floor(Math.random() * words.length)].definition;
+      if (opts.indexOf(o) < 0) opts.push(o);
+    }
+    opts.sort(function () { return Math.random() - 0.5; });
+    openModal('<div style="display:flex;justify-content:space-between"><h3>Quiz</h3><button class="btn btn-o btn-s" id="x">Close</button></div>' +
+      '<p style="font-size:.8rem;color:var(--m)">' + (i + 1) + '/' + q.length + '</p><p style="font-weight:600;margin:.4rem 0">What does "' + w.term + '" mean?</p>' +
+      '<div id="qo"></div><div class="fb" id="qf"></div><button class="btn btn-s" id="qn" style="display:none;margin-top:.5rem">Next</button>');
+    document.getElementById('x').onclick = closeModal;
+    var answered = false;
+    for (var o = 0; o < opts.length; o++) {
+      (function (opt) {
+        var b = document.createElement('button');
+        b.className = 'opt';
+        b.textContent = opt;
+        b.onclick = function () {
+          if (answered) return;
+          answered = true;
+          var good = opt === w.definition;
+          document.getElementById('qf').className = 'fb show ' + (good ? 'ok' : 'bad');
+          document.getElementById('qf').textContent = good ? 'Correct!' : w.definition;
+          if (good) { ok++; score += 10; srsUpdate(w.term, 2); }
+          else { srsUpdate(w.term, 0); markWrong(w.term); }
+          document.getElementById('qn').style.display = 'inline-flex';
+          updateStats();
+          save();
+        };
+        document.getElementById('qo').appendChild(b);
+      })(opts[o]);
+    }
+    document.getElementById('qn').onclick = function () { i++; show(); };
+  }
+  show();
+}
+
+function startWrite() {
+  var q = words.slice().sort(function () { return Math.random() - 0.5; });
+  var i = 0, ok = 0;
+  function show() {
+    if (i >= q.length) {
+      openModal('<h3>Done</h3><p>' + ok + '/' + q.length + ' good uses</p><button class="btn" id="x">Close</button>');
+      document.getElementById('x').onclick = closeModal;
+      return;
+    }
+    var w = q[i];
+    openModal('<div style="display:flex;justify-content:space-between"><h3>Write sentences</h3><button class="btn btn-o btn-s" id="x">Close</button></div>' +
+      '<p style="font-size:.8rem;color:var(--m)">' + (i + 1) + '/' + q.length + '</p>' +
+      '<div class="def"><strong style="color:var(--p)">' + w.term + '</strong><br>' + w.definition + '</div>' +
+      '<textarea id="awi" style="width:100%;min-height:90px;padding:.55rem;border:1.5px solid var(--b);border-radius:10px" placeholder="Your own sentence using the phrase"></textarea>' +
+      '<div style="margin-top:.4rem"><button class="btn btn-s" id="awc">Check</button> <button class="btn btn-o btn-s" id="awh">Model</button></div>' +
+      '<div class="fb" id="awf"></div><button class="btn btn-s" id="awn" style="display:none;margin-top:.5rem">Next</button>');
+    document.getElementById('x').onclick = closeModal;
+    var done = false;
+    document.getElementById('awc').onclick = function () {
+      if (done) return;
+      var t = (document.getElementById('awi').value || '').trim();
+      var fb = document.getElementById('awf');
+      if (t.length < 8) { fb.className = 'fb show info'; fb.textContent = 'Write a fuller sentence.'; return; }
+      done = true;
+      if (phraseRe(w.term).test(t)) {
+        fb.className = 'fb show ok';
+        fb.innerHTML = 'You used <strong>' + w.term + '</strong> correctly.';
+        ok++;
+        score += 20;
+        srsUpdate(w.term, 2);
+      } else {
+        fb.className = 'fb show bad';
+        fb.innerHTML = 'Phrase missing.<br>Model: "' + w.example + '"';
+        srsUpdate(w.term, 0);
+        markWrong(w.term);
+      }
+      document.getElementById('awn').style.display = 'inline-flex';
+      updateStats();
+      save();
+    };
+    document.getElementById('awh').onclick = function () {
+      document.getElementById('awf').className = 'fb show info';
+      document.getElementById('awf').textContent = 'Model: "' + w.example + '"';
+    };
+    document.getElementById('awn').onclick = function () { i++; show(); };
+  }
+  show();
+}
+
+function startSpeak() {
+  var q = words.slice().sort(function () { return Math.random() - 0.5; });
+  var i = 0, ok = 0;
+  function show() {
+    if (i >= q.length) {
+      openModal('<h3>Done</h3><p>' + ok + '/' + q.length + '</p><button class="btn" id="x">Close</button>');
+      document.getElementById('x').onclick = closeModal;
+      return;
+    }
+    var w = q[i];
+    openModal('<div style="display:flex;justify-content:space-between"><h3>Speak sentences</h3><button class="btn btn-o btn-s" id="x">Close</button></div>' +
+      '<p style="font-size:.8rem;color:var(--m)">' + (i + 1) + '/' + q.length + '</p>' +
+      '<div class="def"><strong style="color:var(--p)">' + w.term + '</strong><br>' + w.definition + '</div>' +
+      '<p style="font-size:.85rem;color:var(--m);margin:.4rem 0">Say a sentence using this phrase.</p>' +
+      '<button class="btn" id="asr">Record and check</button>' +
+      '<div class="fb" id="asf" style="margin-top:.5rem"></div>' +
+      '<p id="ast" style="font-size:.85rem;color:var(--m);margin-top:.4rem"></p>' +
+      '<button class="btn btn-s" id="asn" style="display:none;margin-top:.5rem">Next</button>' +
+      '<p style="font-size:.72rem;color:var(--m);margin-top:.5rem">Best in Chrome. Allow microphone when asked.</p>');
+    document.getElementById('x').onclick = closeModal;
+    var done = false;
+    document.getElementById('asr').onclick = function () {
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) {
+        document.getElementById('asf').className = 'fb show info';
+        document.getElementById('asf').textContent = 'Speech recognition not available. Try Chrome.';
+        return;
+      }
+      var r = new SR();
+      r.lang = 'en-GB';
+      r.interimResults = true;
+      var final = '';
+      document.getElementById('ast').textContent = 'Listening...';
+      r.onresult = function (ev) {
+        for (var j = ev.resultIndex; j < ev.results.length; j++) {
+          if (ev.results[j].isFinal) final += ev.results[j][0].transcript + ' ';
+          document.getElementById('ast').textContent = (final + (!ev.results[j].isFinal ? ev.results[j][0].transcript : '')).trim();
+        }
+      };
+      r.onend = function () {
+        var heard = (document.getElementById('ast').textContent || final).trim();
+        if (!heard || done) return;
+        done = true;
+        var fb = document.getElementById('asf');
+        if (phraseRe(w.term).test(heard)) {
+          fb.className = 'fb show ok';
+          fb.innerHTML = 'Heard: "' + heard + '"<br>Phrase used correctly.';
+          ok++;
+          score += 20;
+          srsUpdate(w.term, 2);
+        } else {
+          fb.className = 'fb show bad';
+          fb.innerHTML = 'Heard: "' + heard + '"<br>Missing phrase.<br>Model: "' + w.example + '"';
+          srsUpdate(w.term, 0);
+          markWrong(w.term);
+        }
+        document.getElementById('asn').style.display = 'inline-flex';
+        updateStats();
+        save();
+      };
+      try { r.start(); } catch (e) {
+        document.getElementById('asf').className = 'fb show info';
+        document.getElementById('asf').textContent = 'Mic blocked.';
+      }
+    };
+    document.getElementById('asn').onclick = function () { i++; show(); };
+  }
+  show();
+}
+
+function startReview() {
+  var due = getDue();
+  var q = due.length ? due : words.slice().sort(function (a, b) {
+    return ensureSrs(a.term).nextReview - ensureSrs(b.term).nextReview;
+  });
+  var i = 0;
+  function show() {
+    if (i >= q.length) {
+      openModal('<h3>Done</h3><button class="btn" id="x">Close</button>');
+      document.getElementById('x').onclick = function () { closeModal(); updateStats(); };
+      return;
+    }
+    var w = q[i];
+    openModal('<div style="display:flex;justify-content:space-between"><h3>Review</h3><button class="btn btn-o btn-s" id="x">Close</button></div>' +
+      '<p style="font-size:.8rem;color:var(--m)">' + (i + 1) + '/' + q.length + '</p>' +
+      '<div style="text-align:center;font-size:2rem">' + (w.emoji || '') + '</div>' +
+      '<div style="text-align:center;font-size:1.3rem;font-weight:700;color:var(--p)">' + w.term + '</div>' +
+      '<button class="btn btn-o btn-s" id="rv" style="margin:.5rem auto;display:block">See meaning</button>' +
+      '<div id="rd" style="display:none" class="def">' + w.definition + '<br><em>' + w.example + '</em></div>' +
+      '<div style="display:flex;gap:.4rem;justify-content:center;margin-top:.6rem">' +
+      '<button class="btn btn-s" style="background:#ef4444" id="rh">Hard</button>' +
+      '<button class="btn btn-s" style="background:#f59e0b;color:#111" id="rm">Medium</button>' +
+      '<button class="btn btn-s" style="background:#059669" id="re">Easy</button></div>');
+    document.getElementById('x').onclick = closeModal;
+    document.getElementById('rv').onclick = function () { document.getElementById('rd').style.display = 'block'; };
+    function grade(q) {
+      if (q === 0) markWrong(w.term);
+      srsUpdate(w.term, q === 0 ? 0 : q === 1 ? 1 : 3);
+      i++;
+      show();
+    }
+    document.getElementById('rh').onclick = function () { grade(0); };
+    document.getElementById('rm').onclick = function () { grade(1); };
+    document.getElementById('re').onclick = function () { grade(2); };
+  }
+  show();
+}
+
+function startProgress() {
+  var list = '';
+  for (var i = 0; i < words.length; i++) {
+    var w = words[i];
+    var st = learned.has(w.term) ? '✓' : (difficult.has(w.term) ? '!' : '○');
+    list += '<div style="padding:.35rem 0;border-bottom:1px solid var(--b)">' + st + ' ' + (w.emoji || '') + ' <strong>' + w.term + '</strong></div>';
+  }
+  openModal('<div style="display:flex;justify-content:space-between"><h3>Progress</h3><button class="btn btn-o btn-s" id="x">Close</button></div>' +
+    '<p>Learned: ' + learned.size + ' · Difficult: ' + difficult.size + ' · Total: ' + words.length + '</p>' +
+    '<div style="max-height:40vh;overflow:auto;margin-top:.5rem">' + list + '</div>');
+  document.getElementById('x').onclick = closeModal;
+}
+
+function onYouglishAPIReady() {
+  ygReady = true;
+  try {
+    var w = Math.min(480, Math.max(280, (document.getElementById('yg-widget') || {}).parentElement ? document.getElementById('yg-widget').parentElement.clientWidth : 320));
+    ygWidget = new YG.Widget('yg-widget', {
+      width: w, components: 255, autoStart: false,
+      events: {
+        onFetchDone: function () {
+          var l = document.getElementById('yg-loading');
+          if (l) l.style.display = 'none';
+        },
+        onError: function () {
+          var l = document.getElementById('yg-loading');
+          if (l) l.innerHTML = 'Could not load. Try Reload.';
+        }
+      }
+    });
+    if (pendingTerm) { ygWidget.fetch(pendingTerm, 'english'); pendingTerm = null; }
+  } catch (e) {}
+}
+
+function loadYouGlish(term) {
+  if (!term) return;
+  var l = document.getElementById('yg-loading');
+  if (l) { l.style.display = 'flex'; l.textContent = 'Loading "' + term + '"...'; }
+  if (!ygReady || !ygWidget) {
+    pendingTerm = term;
+    setTimeout(function () {
+      if (ygWidget && pendingTerm) {
+        try { ygWidget.fetch(pendingTerm, 'english'); pendingTerm = null; } catch (e) {}
+      }
+    }, 800);
+    return;
+  }
+  try { ygWidget.fetch(term, 'english'); }
+  catch (e) {
+    if (l) l.innerHTML = 'Open <a href="https://youglish.com/pronounce/' + encodeURIComponent(term) + '/english" target="_blank" rel="noopener" style="color:#a5b4fc">YouGlish</a>';
+  }
+}
+window.onYouglishAPIReady = onYouglishAPIReady;
+
+function safeOn(id, fn) {
+  var el = document.getElementById(id);
+  if (el) el.onclick = fn;
+}
+
+safeOn('menuToggle', function () {
+  document.getElementById('sideMenu').classList.add('open');
+  document.getElementById('menuOverlay').classList.add('show');
+});
+safeOn('menuClose', function () {
+  document.getElementById('sideMenu').classList.remove('open');
+  document.getElementById('menuOverlay').classList.remove('show');
+});
+safeOn('menuOverlay', function () {
+  document.getElementById('sideMenu').classList.remove('open');
+  document.getElementById('menuOverlay').classList.remove('show');
+});
+safeOn('backBtn', function () {
+  showHome();
+  updateStats();
+  renderGrid();
+});
+safeOn('hearBtn', function () { if (currentIndex >= 0) speak(words[currentIndex].term); });
+safeOn('markLearnedBtn', function () { if (currentIndex >= 0) markLearned(words[currentIndex].term); });
+safeOn('markDifficultBtn', function () {
+  if (currentIndex >= 0) { markWrong(words[currentIndex].term); updateStats(); renderGrid(); }
+});
+safeOn('ygReloadBtn', function () { if (currentIndex >= 0) loadYouGlish(words[currentIndex].term); });
+safeOn('addWordBtn', openAddWord);
+safeOn('closeAddWordBtn', function () { document.getElementById('addWordModal').classList.remove('show'); });
+safeOn('saveAddWordBtn', saveAddWord);
+safeOn('imgUploadBtn', function () {
+  if (currentIndex < 0) { alert('Open a word first.'); return; }
+  document.getElementById('imgFileInput').click();
+});
+var fi = document.getElementById('imgFileInput');
+if (fi) {
+  fi.onchange = function (e) {
+    var f = e.target.files && e.target.files[0];
+    if (!f || currentIndex < 0) return;
+    if (f.size > 2.5 * 1024 * 1024) { alert('Please use an image under ~2.5 MB.'); return; }
+    var reader = new FileReader();
+    reader.onload = function () { setWordImage(words[currentIndex].term, reader.result); };
+    reader.readAsDataURL(f);
+    e.target.value = '';
+  };
+}
+safeOn('imgGoogleBtn', function () {
+  if (currentIndex < 0) { alert('Open a word first.'); return; }
+  var q = encodeURIComponent(words[currentIndex].term + ' meaning illustration');
+  window.open('https://www.google.com/search?tbm=isch&q=' + q, '_blank', 'noopener');
+  alert('Find a picture on Google Images, then use Paste URL (or Upload) to attach it here.');
+});
+safeOn('imgUrlBtn', function () {
+  if (currentIndex < 0) { alert('Open a word first.'); return; }
+  var url = prompt('Paste image URL (https://...):');
+  if (url && url.trim()) setWordImage(words[currentIndex].term, url.trim());
+});
+safeOn('imgRemoveBtn', function () {
+  if (currentIndex < 0) return;
+  setWordImage(words[currentIndex].term, '');
+});
+safeOn('dueLine', startReview);
+
+var tabs = document.querySelectorAll('.tab');
+for (var t = 0; t < tabs.length; t++) {
+  tabs[t].onclick = function () {
+    var allTabs = document.querySelectorAll('.tab');
+    var allTc = document.querySelectorAll('.tc');
+    for (var x = 0; x < allTabs.length; x++) allTabs[x].classList.remove('on');
+    for (var x = 0; x < allTc.length; x++) allTc[x].classList.remove('on');
+    this.classList.add('on');
+    var tc = document.getElementById('tab-' + this.getAttribute('data-tab'));
+    if (tc) tc.classList.add('on');
+  };
+}
+
+safeOn('checkSpellBtn', function () {
+  if (currentIndex < 0) return;
+  var w = words[currentIndex];
+  var v = (document.getElementById('spellInput').value || '').trim().toLowerCase();
+  var fb = document.getElementById('spellFb');
+  if (v === w.term.toLowerCase()) {
+    fb.className = 'fb show ok';
+    fb.textContent = 'Correct!';
+    score += 10;
+    srsUpdate(w.term, 2);
+  } else {
+    fb.className = 'fb show bad';
+    fb.textContent = w.term;
+    srsUpdate(w.term, 0);
+    markWrong(w.term);
+  }
+  updateStats();
+  save();
+});
+safeOn('spellHintBtn', function () {
+  if (currentIndex < 0) return;
+  var t = words[currentIndex].term;
+  document.getElementById('spellFb').className = 'fb show info';
+  document.getElementById('spellFb').textContent = t[0] + Array(Math.max(0, t.length - 1) + 1).join('·');
+});
+safeOn('checkSentBtn', function () {
+  if (currentIndex < 0) return;
+  var w = words[currentIndex];
+  var t = (document.getElementById('sentInput').value || '').trim();
+  var fb = document.getElementById('sentFb');
+  if (phraseRe(w.term).test(t)) {
+    fb.className = 'fb show ok';
+    fb.innerHTML = 'Good use of <strong>' + w.term + '</strong>';
+    score += 15;
+    srsUpdate(w.term, 2);
+  } else {
+    fb.className = 'fb show bad';
+    fb.innerHTML = 'Missing phrase. Model: "' + w.example + '"';
+    srsUpdate(w.term, 0);
+  }
+  updateStats();
+  save();
+});
+safeOn('showExBtn', function () {
+  if (currentIndex >= 0) {
+    document.getElementById('sentFb').className = 'fb show info';
+    document.getElementById('sentFb').textContent = words[currentIndex].example;
+  }
+});
+
+var acts = {
+  match: startMatch, gap: startGap, order: startOrder, hang: startHang,
+  quiz: startQuiz, write: startWrite, speak: startSpeak,
+  review: startReview, progress: startProgress
+};
+var actBtns = document.querySelectorAll('[data-act]');
+for (var a = 0; a < actBtns.length; a++) {
+  actBtns[a].onclick = function () {
+    document.getElementById('sideMenu').classList.remove('open');
+    document.getElementById('menuOverlay').classList.remove('show');
+    var fn = acts[this.getAttribute('data-act')];
+    if (fn) fn();
+  };
+}
+
+load();
+loadCustom();
+if (!words || !words.length) words = builtInWords.slice();
+for (var i = 0; i < words.length; i++) ensureSrs(words[i].term);
+renderGrid();
+updateStats();
+</script>
+</body>
+</html>
