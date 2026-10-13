@@ -1,125 +1,487 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empower C1 Dashboard</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; color: #333; text-align: center; }
-        .header { background-color: #6200ee; color: white; padding: 25px 10px; }
-        .header h1 { margin: 0; font-size: 26px; }
-        .header p { margin: 5px 0 0 0; font-size: 14px; opacity: 0.9; }
-        .container { max-width: 500px; margin: 0 auto; padding: 20px; text-align: left; }
-        h2 { font-size: 18px; margin-top: 20px; color: #444; }
-        .unit-title { font-size: 13px; font-weight: bold; color: #888; letter-spacing: 1px; margin-top: 25px; text-transform: uppercase; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; }
-        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 10px; }
-        .card { background: white; border: 2px solid #e0e0e0; border-radius: 12px; padding: 15px 5px; text-align: center; text-decoration: none; color: #333; font-weight: bold; transition: 0.2s; display: block; }
-        .card:hover { border-color: #6200ee; background-color: #fafdff; transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .card .num { font-size: 20px; color: #6200ee; display: block; }
-        .card .count { font-size: 11px; color: #666; font-weight: normal; margin-top: 4px; display: block; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#312e81">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Empower C1 vocabulary — study, use, review">
+<title>Empower C1 · Vocabulary</title>
+<style>
+:root {
+  --bg: #f7f5f0;
+  --surface: #fffefb;
+  --border: #e8e4dc;
+  --text: #1c1917;
+  --muted: #78716c;
+  --accent: #4f46e5;
+  --accent-soft: #eef2ff;
+  --accent-dark: #3730a3;
+  --success: #0f766e;
+  --success-soft: #ccfbf1;
+  --warn: #b45309;
+  --warn-soft: #fef3c7;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --font: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  padding: calc(18px + var(--safe-top)) 16px calc(36px + var(--safe-bottom));
+  font-family: var(--font-ui);
+  -webkit-tap-highlight-color: transparent;
+}
+.wrap { max-width: 440px; margin: 0 auto; }
+
+header { margin-bottom: 20px; }
+.eyebrow {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+}
+h1 {
+  font-family: var(--font);
+  font-size: 1.65rem; font-weight: 700;
+  letter-spacing: -0.03em; line-height: 1.15;
+}
+.sub { color: var(--muted); font-size: 0.9rem; margin-top: 6px; line-height: 1.4; }
+
+/* Smart next */
+.next-card {
+  background: linear-gradient(145deg, #312e81 0%, #4f46e5 55%, #6366f1 100%);
+  color: #fff;
+  border-radius: 18px;
+  padding: 18px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(49,46,129,0.28);
+}
+.next-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; opacity: 0.85; margin-bottom: 6px;
+}
+.next-title { font-family: var(--font); font-size: 1.2rem; font-weight: 700; line-height: 1.25; }
+.next-sub { font-size: 0.82rem; opacity: 0.9; margin-top: 6px; line-height: 1.4; }
+.next-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.next-btn {
+  display: block; text-align: center; text-decoration: none;
+  background: #fff; color: var(--accent-dark);
+  font-weight: 700; font-size: 0.95rem;
+  padding: 14px 16px; border-radius: 12px; min-height: 48px;
+  line-height: 1.2;
+}
+.next-btn:active { transform: scale(0.98); }
+.next-btn.ghost {
+  background: transparent; color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.35);
+}
+
+/* Overall strip */
+.overall {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 18px;
+}
+.overall h2 {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted); margin-bottom: 12px; font-weight: 700;
+}
+.stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+.stat {
+  text-align: center; background: var(--bg);
+  border-radius: 12px; padding: 10px 4px;
+}
+.stat .n { font-weight: 800; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.stat .l { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; }
+.stat.due .n { color: var(--warn); }
+.stat.ok .n { color: var(--success); }
+
+.section-label {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--muted); margin: 0 2px 10px;
+}
+
+.unit {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.unit-head {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; padding: 14px; min-height: 56px;
+  text-align: left; background: transparent; border: none;
+  cursor: pointer; font: inherit; color: inherit;
+}
+.unit-head:active { background: #faf8f4; }
+.unit-num {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: var(--accent-soft); color: var(--accent);
+  font-weight: 800; font-size: 0.8rem;
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.unit.has-open .unit-num {
+  background: var(--accent); color: #fff;
+}
+.unit-meta { flex: 1; min-width: 0; }
+.unit-title { font-weight: 700; font-size: 0.95rem; }
+.unit-sub { font-size: 0.75rem; color: var(--muted); margin-top: 3px; line-height: 1.35; }
+.unit-due-pill {
+  font-size: 0.7rem; font-weight: 700; color: var(--warn);
+  background: var(--warn-soft); padding: 4px 8px; border-radius: 99px;
+  flex-shrink: 0;
+}
+.unit-chevron {
+  color: var(--muted); font-size: 1rem; transition: transform 0.2s;
+  flex-shrink: 0; width: 24px; text-align: center;
+}
+.unit.open .unit-chevron { transform: rotate(180deg); color: var(--accent); }
+
+.unit-body {
+  display: none; padding: 0 10px 12px;
+  border-top: 1px solid var(--border);
+}
+.unit.open .unit-body { display: block; }
+
+.lesson-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 10px; margin-top: 8px;
+  border-radius: 12px; text-decoration: none; color: inherit;
+  background: var(--bg); border: 1.5px solid transparent; min-height: 56px;
+}
+.lesson-row.open-lesson {
+  background: #fff; border-color: #ddd6fe;
+}
+.lesson-row.open-lesson:active {
+  border-color: var(--accent); background: var(--accent-soft);
+}
+.lesson-row.locked { opacity: 0.42; pointer-events: none; }
+.lr-badge {
+  width: 42px; height: 42px; border-radius: 11px;
+  background: #e7e5e4; color: var(--muted);
+  font-weight: 800; font-size: 0.82rem;
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.lesson-row.open-lesson .lr-badge {
+  background: var(--accent-soft); color: var(--accent);
+}
+.lr-body { flex: 1; min-width: 0; }
+.lr-title { font-weight: 650; font-size: 0.88rem; }
+.lr-meta { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+.lr-bar {
+  height: 5px; background: #e7e5e4; border-radius: 99px;
+  margin-top: 6px; overflow: hidden;
+}
+.lr-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #0f766e, #2dd4bf);
+  border-radius: 99px;
+}
+.lr-right { text-align: right; flex-shrink: 0; }
+.lr-pct { font-weight: 800; font-size: 0.85rem; color: var(--success); font-variant-numeric: tabular-nums; }
+.lr-pct.zero { color: var(--muted); font-weight: 600; }
+.lr-due {
+  font-size: 0.68rem; color: var(--warn); font-weight: 700; margin-top: 2px;
+}
+.lr-due.zero { color: var(--muted); font-weight: 500; }
+.lr-chev { color: #d6d3d1; font-size: 1.2rem; margin-left: 4px; }
+
+footer {
+  text-align: center; margin-top: 28px;
+  font-size: 0.75rem; color: var(--muted); line-height: 1.55;
+}
+</style>
 </head>
 <body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Empower C1</div>
+    <h1>C1 Vocabulary</h1>
+    <p class="sub">Meet the words · use them · review when due. Progress stays in this browser.</p>
+  </header>
 
-    <div class="header">
-        <h1>📊 Empower C1 Vocabulary</h1>
-        <p>Select a lesson below to start practicing</p>
+  <section class="next-card" id="nextCard">
+    <div class="next-label">Next step</div>
+    <div class="next-title" id="nextTitle">Loading…</div>
+    <div class="next-sub" id="nextSub"></div>
+    <div class="next-actions" id="nextActions"></div>
+  </section>
+
+  <section class="overall">
+    <h2>Across all open lessons</h2>
+    <div class="stats">
+      <div class="stat"><div class="n" id="osMastered">0</div><div class="l">Mastered</div></div>
+      <div class="stat"><div class="n" id="osTotal">0</div><div class="l">Items</div></div>
+      <div class="stat due"><div class="n" id="osDue">0</div><div class="l">Due</div></div>
+      <div class="stat"><div class="n" id="osHard">0</div><div class="l">Hard</div></div>
     </div>
+  </section>
 
-    <div class="container">
-        <h2>Lessons Dashboard</h2>
-        
-        <!-- UNIT 1 -->
-        <div class="unit-title">Unit 1</div>
-        <div class="grid">
-            <a href="empower_c1_lesson_1A.html" class="card"><span class="num">1A</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_1B.html" class="card"><span class="num">1B</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_1C.html" class="card"><span class="num">1C</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_1D.html" class="card"><span class="num">1D</span><span class="count">Open</span></a>
-        </div>
+  <div class="section-label">Units</div>
+  <div id="units"></div>
 
-        <!-- UNIT 2 -->
-        <div class="unit-title">Unit 2</div>
-        <div class="grid">
-            <a href="empower_c1_lesson_2A.html" class="card"><span class="num">2A</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_2B.html" class="card"><span class="num">2B</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_2C.html" class="card"><span class="num">2C</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_2D.html" class="card"><span class="num">2D</span><span class="count">Open</span></a>
-        </div>
+  <footer>
+    Spaced review is per lesson — open a lesson with items due to practise them.<br>
+    1A · 1B · 1C · 1D open · more lessons later.
+  </footer>
+</div>
 
-        <!-- UNIT 3 -->
-        <div class="unit-title">Unit 3</div>
-        <div class="grid">
-            <a href="empower_c1_lesson_3A.html" class="card"><span class="num">3A</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_3B.html" class="card"><span class="num">3B</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_3C.html" class="card"><span class="num">3C</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_3D.html" class="card"><span class="num">3D</span><span class="count">Open</span></a>
-        </div>
+<script>
+const LESSON_DATA = {
+  '1A': { title: 'Language learning',   count: 9,  href: 'Empower-C1-Lesson-1A.html', storage: 'eflPhraseTrainer_EmpowerC1_1A_v1', open: true },
+  '1B': { title: 'Trends & change',     count: 13, href: 'Empower-C1-Lesson-1B.html', storage: 'eflPhraseTrainer_EmpowerC1_1B_v1', open: true },
+  '1C': { title: 'Vague language',      count: 8,  href: 'Empower-C1-Lesson-1C.html', storage: 'eflPhraseTrainer_EmpowerC1_1C_v1', open: true },
+  '1D': { title: 'Idioms and opinions', count: 12, href: 'Empower-C1-Lesson-1D.html', storage: 'eflPhraseTrainer_EmpowerC1_1D_v1', open: true }
+};
 
-        <!-- UNIT 4 -->
-        <div class="unit-title">Unit 4</div>
-        <div class="grid">
-            <a href="empower_c1_lesson_4A.html" class="card"><span class="num">4A</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_4B.html" class="card"><span class="num">4B</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_4C.html" class="card"><span class="num">4C</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_4D.html" class="card"><span class="num">4D</span><span class="count">Open</span></a>
-        </div>
+// Unit titles are optional — add e.g. 1: 'Change' once confirmed.
+const UNIT_TITLES = {};
 
-        <!-- UNIT 5 -->
-        <div class="unit-title">Unit 5</div>
-        <div class="grid">
-            <a href="empower_c1_lesson_5A.html" class="card"><span class="num">5A</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_5B.html" class="card"><span class="num">5B</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_5C.html" class="card"><span class="num">5C</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_5D.html" class="card"><span class="num">5D</span><span class="count">Open</span></a>
-        </div>
+// Slots per unit: lessons A–D, then review, review extension, reading, documentary
+const SLOTS = [
+  ['A', 'Lesson A'], ['B', 'Lesson B'], ['C', 'Lesson C'], ['D', 'Lesson D'],
+  ['R', 'Unit review'], ['RE', 'Review extension'], ['Rd', 'Reading'], ['Doc', 'Documentary video']
+];
+function slotLabel(id) {
+  const key = id.replace(/^\d+/, '');
+  const hit = SLOTS.filter(function(s) { return s[0] === key; })[0];
+  return hit ? hit[1] : 'Lesson ' + id;
+}
 
-        <!-- UNIT 6 -->
-        <div class="unit-title">Unit 6</div>
-        <div class="grid">
-            <a href="empower_c1_lesson_6A.html" class="card"><span class="num">6A</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_6B.html" class="card"><span class="num">6B</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_6C.html" class="card"><span class="num">6C</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_6D.html" class="card"><span class="num">6D</span><span class="count">Open</span></a>
-        </div>
+function readProgress(key, totalHint) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) {
+      return { mastered: 0, produced: 0, hard: 0, due: 0, introduced: 0, total: totalHint || 0, started: false };
+    }
+    const s = JSON.parse(raw);
+    const mastered = Object.values(s.learned || {}).filter(Boolean).length;
+    const hard = Object.values(s.difficult || {}).filter(Boolean).length;
+    const now = Date.now();
+    let due = 0, introduced = 0, produced = 0;
+    const srs = s.srs || {};
+    for (const k of Object.keys(srs)) {
+      const c = srs[k];
+      if (!c) continue;
+      if (c.nextReview && c.nextReview <= now) due++;
+      if (c.introduced || c.repetitions || c.correctRecalls) introduced++;
+      if ((c.productions || 0) > 0) produced++;
+    }
+    // sentences count as production too
+    const sent = s.sentences || {};
+    for (const k of Object.keys(sent)) {
+      if (sent[k] && sent[k].length) produced = Math.max(produced, produced); // already from srs
+    }
+    return {
+      mastered,
+      produced,
+      hard,
+      due,
+      introduced,
+      total: totalHint || 0,
+      started: introduced > 0 || mastered > 0
+    };
+  } catch (e) {
+    return { mastered: 0, produced: 0, hard: 0, due: 0, introduced: 0, total: totalHint || 0, started: false };
+  }
+}
 
-        <!-- UNIT 7 -->
-        <div class="unit-title">Unit 7</div>
-        <div class="grid">
-            <a href="empower_c1_lesson_7A.html" class="card"><span class="num">7A</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_7B.html" class="card"><span class="num">7B</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_7C.html" class="card"><span class="num">7C</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_7D.html" class="card"><span class="num">7D</span><span class="count">Open</span></a>
-        </div>
+function allOpenLessons() {
+  return Object.keys(LESSON_DATA).filter(function(id) { return LESSON_DATA[id].open; });
+}
 
-        <!-- UNIT 8 -->
-        <div class="unit-title">Unit 8</div>
-        <div class="grid">
-            <a href="empower_c1_lesson_8A.html" class="card"><span class="num">8A</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_8B.html" class="card"><span class="num">8B</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_8C.html" class="card"><span class="num">8C</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_8D.html" class="card"><span class="num">8D</span><span class="count">Open</span></a>
-        </div>
+function lessonRowHtml(id) {
+  const data = LESSON_DATA[id];
+  if (data && data.open) {
+    const p = readProgress(data.storage, data.count);
+    const pct = data.count ? Math.round((p.mastered / data.count) * 100) : 0;
+    const status = !p.started
+      ? 'Not started'
+      : (p.mastered + ' / ' + data.count + ' mastered');
+    const dueText = p.due > 0 ? (p.due + ' due') : (p.started ? 'Nothing due' : '—');
+    return (
+      '<a class="lesson-row open-lesson" href="' + data.href + '">' +
+        '<div class="lr-badge">' + id + '</div>' +
+        '<div class="lr-body">' +
+          '<div class="lr-title">' + data.title + '</div>' +
+          '<div class="lr-meta">' + status + (p.produced ? ' · ' + p.produced + ' used in context' : '') + '</div>' +
+          '<div class="lr-bar"><div class="lr-fill" style="width:' + pct + '%"></div></div>' +
+        '</div>' +
+        '<div class="lr-right">' +
+          '<div class="lr-pct' + (pct === 0 && !p.started ? ' zero' : '') + '">' + (p.started ? pct + '%' : 'New') + '</div>' +
+          '<div class="lr-due' + (p.due ? '' : ' zero') + '">' + dueText + '</div>' +
+        '</div>' +
+        '<span class="lr-chev">›</span>' +
+      '</a>'
+    );
+  }
+  return (
+    '<div class="lesson-row locked">' +
+      '<div class="lr-badge">' + id + '</div>' +
+      '<div class="lr-body">' +
+        '<div class="lr-title">' + slotLabel(id) + '</div>' +
+        '<div class="lr-meta">Coming soon</div>' +
+      '</div>' +
+    '</div>'
+  );
+}
 
-        <!-- UNIT 9 -->
-        <div class="unit-title">Unit 9</div>
-        <div class="grid">
-            <a href="empower_c1_lesson_9A.html" class="card"><span class="num">9A</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_9B.html" class="card"><span class="num">9B</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_9C.html" class="card"><span class="num">9C</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_9D.html" class="card"><span class="num">9D</span><span class="count">Open</span></a>
-        </div>
+function unitStats(unitNum) {
+  let mastered = 0, total = 0, due = 0, hard = 0, openCount = 0, started = 0;
+  for (const slot of SLOTS) {
+    const id = unitNum + slot[0];
+    const data = LESSON_DATA[id];
+    if (data && data.open) {
+      openCount++;
+      const p = readProgress(data.storage, data.count);
+      mastered += p.mastered;
+      total += data.count;
+      due += p.due;
+      hard += p.hard;
+      if (p.started) started++;
+    }
+  }
+  return { mastered, total, due, hard, openCount, started };
+}
 
-        <!-- UNIT 10 -->
-        <div class="unit-title">Unit 10</div>
-        <div class="grid">
-            <a href="empower_c1_lesson_10A.html" class="card"><span class="num">10A</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_10B.html" class="card"><span class="num">10B</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_10C.html" class="card"><span class="num">10C</span><span class="count">Open</span></a>
-            <a href="empower_c1_lesson_10D.html" class="card"><span class="num">10D</span><span class="count">Open</span></a>
-        </div>
+function pickNextAction() {
+  const lessons = allOpenLessons().map(function(id) {
+    const data = LESSON_DATA[id];
+    const p = readProgress(data.storage, data.count);
+    return { id: id, data: data, p: p };
+  });
 
-    </div>
+  // Priority 1: most due items
+  const withDue = lessons.filter(function(x) { return x.p.due > 0; })
+    .sort(function(a, b) { return b.p.due - a.p.due; });
+  if (withDue.length) {
+    const top = withDue[0];
+    const totalDue = withDue.reduce(function(s, x) { return s + x.p.due; }, 0);
+    const others = withDue.length - 1;
+    return {
+      title: 'Review due items',
+      sub: totalDue + ' item' + (totalDue === 1 ? '' : 's') + ' waiting across ' +
+        withDue.length + ' lesson' + (withDue.length === 1 ? '' : 's') +
+        '. Start with ' + top.id + ' (' + top.p.due + ' due).',
+      primary: { label: 'Review ' + top.id + ' · ' + top.p.due + ' due', href: top.data.href },
+      secondary: others > 0 ? { label: 'Also due: ' + withDue.slice(1).map(function(x){ return x.id; }).join(', '), href: withDue[1].data.href } : null
+    };
+  }
 
+  // Priority 2: not started
+  const fresh = lessons.filter(function(x) { return !x.p.started; });
+  if (fresh.length) {
+    const t = fresh[0];
+    return {
+      title: 'Start a new lesson',
+      sub: t.id + ' · ' + t.data.title + ' · about 5–8 minutes for a first batch.',
+      primary: { label: 'Open ' + t.id, href: t.data.href },
+      secondary: fresh[1] ? { label: 'Or ' + fresh[1].id + ' · ' + fresh[1].data.title, href: fresh[1].data.href } : null
+    };
+  }
+
+  // Priority 3: continue learning (lowest mastery %)
+  const ongoing = lessons.slice().sort(function(a, b) {
+    const pa = a.data.count ? a.p.mastered / a.data.count : 1;
+    const pb = b.data.count ? b.p.mastered / b.data.count : 1;
+    return pa - pb;
+  });
+  const c = ongoing[0];
+  return {
+    title: 'Keep going',
+    sub: 'Nothing due right now. Continue ' + c.id + ' · ' + c.data.title +
+      ' (' + c.p.mastered + '/' + c.data.count + ' mastered).',
+    primary: { label: 'Open ' + c.id, href: c.data.href },
+    secondary: null
+  };
+}
+
+function renderNext() {
+  const a = pickNextAction();
+  document.getElementById('nextTitle').textContent = a.title;
+  document.getElementById('nextSub').textContent = a.sub;
+  const box = document.getElementById('nextActions');
+  let html = '<a class="next-btn" href="' + a.primary.href + '">' + a.primary.label + '</a>';
+  if (a.secondary) {
+    html += '<a class="next-btn ghost" href="' + a.secondary.href + '">' + a.secondary.label + '</a>';
+  }
+  box.innerHTML = html;
+}
+
+function render() {
+  const root = document.getElementById('units');
+  root.innerHTML = '';
+
+  let sumM = 0, sumT = 0, sumDue = 0, sumHard = 0;
+
+  for (let u = 1; u <= 10; u++) {
+    const stats = unitStats(u);
+    sumM += stats.mastered;
+    sumT += stats.total;
+    sumDue += stats.due;
+    sumHard += stats.hard;
+
+    const hasOpen = stats.openCount > 0;
+    const unit = document.createElement('div');
+    unit.className = 'unit' + (hasOpen ? ' has-open' : '');
+    unit.dataset.unit = String(u);
+
+    const saved = sessionStorage.getItem('empower_c1_unit_open_' + u);
+    if (saved === '1' || (saved === null && u === 1 && hasOpen)) {
+      unit.classList.add('open');
+    }
+
+    const subParts = [];
+    if (stats.openCount) {
+      if (stats.started === 0) subParts.push('Not started');
+      else subParts.push(stats.mastered + '/' + stats.total + ' mastered');
+      if (stats.due) subParts.push(stats.due + ' due for review');
+      else if (stats.started) subParts.push('Nothing due');
+    } else {
+      subParts.push('Coming soon');
+    }
+
+    unit.innerHTML =
+      '<button type="button" class="unit-head" aria-expanded="' + unit.classList.contains('open') + '">' +
+        '<div class="unit-num">U' + u + '</div>' +
+        '<div class="unit-meta">' +
+          '<div class="unit-title">Unit ' + u + (UNIT_TITLES[u] ? ' · ' + UNIT_TITLES[u] : '') + '</div>' +
+          '<div class="unit-sub">' + subParts.join(' · ') + '</div>' +
+        '</div>' +
+        (stats.due ? '<span class="unit-due-pill">' + stats.due + ' due</span>' : '') +
+        '<span class="unit-chevron">▾</span>' +
+      '</button>' +
+      '<div class="unit-body">' +
+        SLOTS.map(function(s) { return lessonRowHtml(u + s[0]); }).join('') +
+      '</div>';
+
+    unit.querySelector('.unit-head').addEventListener('click', function() {
+      var open = unit.classList.toggle('open');
+      unit.querySelector('.unit-head').setAttribute('aria-expanded', open ? 'true' : 'false');
+      sessionStorage.setItem('empower_c1_unit_open_' + u, open ? '1' : '0');
+    });
+
+    root.appendChild(unit);
+  }
+
+  document.getElementById('osMastered').textContent = sumM;
+  document.getElementById('osTotal').textContent = sumT;
+  document.getElementById('osDue').textContent = sumDue;
+  document.getElementById('osHard').textContent = sumHard;
+
+  renderNext();
+}
+
+render();
+</script>
 </body>
 </html>
